@@ -27,3 +27,37 @@ class DeliveryExecutive :
             if i[0] == email and i[1] == password :
                 return True 
         return False 
+
+    # @brief This method returns the orders that are delivered or to be
+    #        delivered by the executive
+    # @retval List containing orderid, customername, address details (pincode,
+    #         street, landmark, city, state), orderstatus.
+    @staticemethod
+    def get_orders_details(pysql, deliveryexecutive_id) :
+        sql_stmt =  'WITH T1 AS ('
+                        'SELECT Order_ID, Address_ID, Status ' \
+                        'FROM Orders ' \
+                        'WHERE Order_ID in ( ' \
+                            'SELECT Order_ID from Delivery ' \
+                            'WHERE ID = %s)) ' \
+                    'SELECT Order_ID, First_name, Pincode, Street, Landmark, City, State, Status ' \ 
+                    'FROM  Customer INNER JOIN ' \
+                    '(SELECT Order_ID, Customer_ID, Pincode, Street, Landmark, City, State, Status, ' \
+                    'FROM Address INNER JOIN T1 ' \
+                    'ON Address.Address_ID=T1.Address_ID) AS T2 ' \
+                    'WHERE Customer.Customer_ID=T2.Customer_ID'
+        pysql.run(sql_stmt, (deliveryexecutive_id, ))
+        row = pysql.result
+        return row
+
+    # @brief This method gives all the delivery executive of the system.
+    #        Normally used by ADMIN
+    @staticmethod
+    def get_all_deliveryexecutive(pysql) :
+        sql_stmt =  'SELECT ID, Name, Email, Salary, Phone1, Phone2, WorkTime ' \
+                    'FROM Product'
+
+        pysql.run(sql_stmt)
+        rows = pysql.result
+
+        return rows 

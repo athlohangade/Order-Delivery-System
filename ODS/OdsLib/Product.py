@@ -158,3 +158,16 @@ class Product :
         products = pysql.result
 
         return products
+
+    # Gives all products from database. Used by ADMIN
+    @staticmethod
+    def get_all_products(pysql) :
+        sql_stmt =  'SELECT Product_ID, Name, Category, Price, Rating, Seller, Quantity ' \
+                    'FROM Product'
+
+        pysql.run(sql_stmt)
+        products = pysql.result
+
+        return products
+
+

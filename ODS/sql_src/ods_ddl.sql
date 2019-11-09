@@ -116,3 +116,11 @@ CREATE TABLE Cart (
     CONSTRAINT Cart_Prod_ID5_FK FOREIGN KEY (Prod_ID5) REFERENCES Product (Product_ID) ON DELETE SET NULL,
     CONSTRAINT Customer_PK PRIMARY KEY (Customer_ID)
 );
+
+CREATE TABLE OrderDetails (
+    Order_ID        CHAR(10),
+    Product_ID      CHAR(10),
+    CONSTRAINT OrderDetails_FK_1 FOREIGN KEY (Order_ID) REFERENCES Orders (Order_ID) ON DELETE CASCADE,
+    CONSTRAINT OrderDetails_FK_2 FOREIGN KEY (Product_ID) REFERENCES Product (Product_ID) ON DELETE CASCADE,
+    CONSTRAINT OrderDetails_PK PRIMARY KEY (Order_ID, Product_ID)
+);
