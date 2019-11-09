@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Admin: Insert Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+    </style>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<br><br><br>
+<form class="form-horizontal">
+<div class="form-group">
+  <label class="col-md-4 control-label" for="product_id">Product ID</label>
+  <div class="col-md-4">
+  <input id="product_id" name="product_id" placeholder="Product ID" class="form-control input-md" required="required" type="text">
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="product_name">Product Name</label>
+  <div class="col-md-4">
+  <input id="product_name" name="product_name" placeholder="Product Name" class="form-control input-md" required="required" type="text">
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="product_name_fr">Product Rating</label>
+  <div class="col-md-4">
+  <input id="product_rating" name="product_rating" placeholder="Product Rating" class="form-control input-md" required="required" type="text">
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="product_category">Product Category</label>
+  <div class="col-md-4">
+    <select id="product_category" name="product_category" class="form-control">
+        <option value="Mobile">Mobile</option>
+        <option value="Laptop">Laptop</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Sport">Sport</option>
+        <option value="Books">Books</option>
+    </select>
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="product_quantity">Quantity</label>
+  <div class="col-md-4">
+  <input id="product_quantity" name="product_quantity" placeholder="Quantity" class="form-control input-md" required="required" type="text">
+  </div>
+</div>
+<div class="form-group">
+    <label class="col-md-4 control-label" for="product_seller">Seller</label>
+  <div class="col-md-4">
+  <input id="product_seller" name="product_seller" placeholder="Seller" class="form-control input-md" required="" type="text">
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label"></label>
+  <div class="col-md-4">
+      <button type="submit" name="add_product" id="add_product" class="btn btn-success loginFormElement">Add Product</button>
+  </div>
+</div>
+</form>
+</body>
+</html>
