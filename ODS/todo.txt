@@ -1,0 +1,2 @@
+-- Change the ER --> Change the Availabity attribute of Product table to
+                     Quantity

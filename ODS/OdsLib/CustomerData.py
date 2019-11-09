@@ -36,7 +36,7 @@ class CustomerData :
     # @retval boolean returns the customer_id allocated for that entry if the 
     #         entry is successfully inserted in the database, else 0
     @staticmethod
-    def enter_customer_data(pysql, firstname, lastname, email, password, phone1, phone2) :
+    def customer_signup(pysql, firstname, lastname, email, password, phone1, phone2) :
         # Fetch the global variables
         global next_customer_id
         global next_customer_id_read

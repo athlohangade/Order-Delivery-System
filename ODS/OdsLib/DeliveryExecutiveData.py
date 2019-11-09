@@ -1,6 +1,6 @@
-# This variable stores the next CustomerID integer
+# This variable stores the next DeliveryExecutiveID integer
 next_deliveryexecutive_id = None
-# This variable indicates whether the next_customer_id has been initialized
+# This variable indicates whether the next_deliveryexecutive_id has been initialized
 next_deliveryexecutive_id_read = 0
 
 # @brief This class is used to handle the Delivery Executive data in ODS 
@@ -8,7 +8,7 @@ next_deliveryexecutive_id_read = 0
 #        methods in this class are static
 class DeliveryExecutiveData :
 
-	# @brief The function is used to verify the details entered by the customer
+    # @brief The function is used to verify the details entered by the deliveryexecutive
     #        during sign in for allowing the access to the account
     # @param pysql Pysql Object
     # @param email EmailID of the account (string)

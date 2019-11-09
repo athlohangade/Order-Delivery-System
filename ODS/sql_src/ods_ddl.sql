@@ -94,7 +94,7 @@ CREATE TABLE Product (
     Price           NUMERIC(6, 0) UNSIGNED DEFAULT 0,
     Rating          NUMERIC(2, 1) UNSIGNED DEFAULT 0,
     Seller          VARCHAR(20),
-    Availability    ENUM ("In-Stock", "Out-Of-Stock"),
+    Quantity        NUMERIC(3, 0) UNSIGNED DEFAULT 0,
     CONSTRAINT Product_ID_FMT CHECK (Product_ID REGEXP "^[A-Z]{3}-[0-9]{6}$"),
     CONSTRAINT Product_Price CHECK (Price >= 0),
     CONSTRAINT Product_Rating CHECK (Rating >= 0 and Rating <= 5),

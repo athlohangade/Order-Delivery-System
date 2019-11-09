@@ -53,7 +53,7 @@ def customer_signup_page() :
 
                 print("Check password")
                 # Add the details to the sql database
-                customer_id = CustomerData.enter_customer_data(pysql, firstname, lastname, email, password, phone1, phone2)
+                customer_id = CustomerData.customer_signup(pysql, firstname, lastname, email, password, phone1, phone2)
                 if customer_id != 0 :
                     return render_template('/CustomerSignIn/customer_signup_success.html', customer_id = customer_id)
 
