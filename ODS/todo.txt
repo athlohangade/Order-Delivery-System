@@ -1,2 +1,5 @@
 -- Change the ER --> Change the Availabity attribute of Product table to
                      Quantity
+                     Also make "name" attribute before the "category" attribute
+                     in product table
+-- Ordering by both price and rating to be discussed with Mayank.

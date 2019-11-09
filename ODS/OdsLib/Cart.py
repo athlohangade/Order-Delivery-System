@@ -1,3 +1,7 @@
+# @brief This class is to handle the adding and removing from the cart table
+# @note  There is not need to create an object of this class as all
+#        methods in this class are static
+
 class Cart :
 
     # @brief This method adds the product to the cart that is assigned to the 
@@ -64,5 +68,6 @@ class Cart :
                     'SET Prod_ID%s = %s' \
                     'WHERE Customer_ID = %s'
         pysql.run(sql_stmt, (i, 'NULL', customer_id))
+        pysql.commit()
 
         return 1
