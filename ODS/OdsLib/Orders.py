@@ -10,7 +10,7 @@ class Orders :
     #        Approriate entries for the given order are made
     # @retval Return 1 if entry added successfully, else 0
     @staticmethod
-    def add_order(pysql, customer_id, address_id, payment_method) :
+    def place_order(pysql, customer_id, address_id, payment_method) :
         
         letters = list(map(chr, range(ord('A'), ord('Z')+1)))
         l1 = letters[random.choice([i for i in range(0, 26)])]
@@ -31,9 +31,9 @@ class Orders :
             next_order_id_read = 1 
 
         # Now get the order_id
-        order_id = l1 + l2 + format(next_order_id, '07d')
+        order_id = l1 + l2 + '-' + format(next_order_id, '07d')
         
-        # Find total. Use the cart table
+        # Find total. Use the cart table and product table
         sql_stmt =  'SELECT * ' \
                     'FROM Cart ' \
                     'WHERE Customer_ID = %s'
@@ -42,7 +42,12 @@ class Orders :
 
         total = 0
         for i in range(1, 6) :
-            total += row[i]
+            sql_stmt =  'SELECT Price ' \
+                        'FROM Product ' \
+                        'WHERE Product_ID = %s'
+            pysql.run(sql_stmt, (row[i], ))
+            prices = pysql.result
+            total += price
 
         # Make an entry in the database
         sql_stmt =  'INSERT INTO Product ' \
@@ -56,6 +61,19 @@ class Orders :
 
             # Next order id
             next_order_id += 1
-            return 1
+            
+            # Add the (order_id, product_id) combination in OrderDetails Table
+            for i in range(1, 6) :
+                sql_stmt =  'INSERT INTO OrderDetails ' \
+                            'VALUES (%s, %s)'
+                pysql.run(sql_stmt, (order_id, row[i]));
+                pysql.commit()
+
+            # Empty the Cart
+            sql_stmt =  'DELETE FROM Cart ' \
+                        'WHERE Customer_ID = %s'
+            pysql.run(sql_stmt, (customer_id, ))
+            pysql.commit()
+
         except :
             return 0

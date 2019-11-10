@@ -17,8 +17,8 @@ class DeliveryExecutive :
     @staticmethod
     def check_deliveryexecutive_signin(pysql, email, password) :
         # Get the email and password entries from database
-        sql_stmt =  'SELECT Email, Password '\ 
-                    'FROM Delivery_Executive'
+        sql_stmt =  'SELECT Email, Password ' \
+                    'FROM DeliveryExecutive'
         pysql.run(sql_stmt)
         data = pysql.result
 
@@ -28,19 +28,62 @@ class DeliveryExecutive :
                 return True 
         return False 
 
+
+    # @brief The function is used to add delivery executive to the sql database.
+    #        This is used by ADMIN
+    # @param pysql Pysql Object
+    # @param Name of the parameter are self-explanatory (string)
+    # @retval boolean returns the deliveryexecutive_id allocated for that entry 
+    #         if the entry is successfully inserted in the database, else 0
+    @staticmethod
+    def add_deliveryexecutive(pysql, firstname, lastname, email, password, worktime, salary, phone1, phone2) :
+        # Fetch the global variables
+        global next_deliveryexecutive_id
+        global next_deliveryexecutive_id_read
+
+        # Find the last deliveryexecutive id stored in the database to allocate next id
+        # to the next deliveryexecutive. If the number of entries of the deliveryexecutive are not
+        # known, then using deliveryexecutive_id_read flag and sql query, we can find it!
+        if not next_deliveryexecutive_id_read :
+            sql_stmt =  'SELECT COUNT(*) ' \
+                        'FROM DeliveryExecutive'
+            pysql.run(sql_stmt)
+            next_deliveryexecutive_id = pysql.scalar_result
+            next_deliveryexecutive_id_read = 1 
+
+        # Now get the deliveryexecutive_id
+        deliveryexecutive_id = 'D' + format(next_deliveryexecutive_id, '05d')
+
+        # Make an entry in the database
+        sql_stmt =  'INSERT INTO DeliveryExecutive ' \
+                    'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)' 
+
+        try : 
+            pysql.run(sql_stmt, (deliveryexecutive_id, firstname, lastname, email, password, worktime, salary, phone1, phone2))
+
+            # Commit the changes to the remote database
+            pysql.commit()
+
+            # Next deliveryexecutive_id for further sign in
+            next_deliveryexecutive_id += 1
+            return deliveryexecutive_id
+
+        except :
+            return 0
+
     # @brief This method returns the orders that are delivered or to be
     #        delivered by the executive
     # @retval List containing orderid, customername, address details (pincode,
     #         street, landmark, city, state), orderstatus.
-    @staticemethod
+    @staticmethod
     def get_orders_details(pysql, deliveryexecutive_id) :
-        sql_stmt =  'WITH T1 AS ('
+        sql_stmt =  'WITH T1 AS ( ' \
                         'SELECT Order_ID, Address_ID, Status ' \
                         'FROM Orders ' \
                         'WHERE Order_ID in ( ' \
                             'SELECT Order_ID from Delivery ' \
                             'WHERE ID = %s)) ' \
-                    'SELECT Order_ID, First_name, Pincode, Street, Landmark, City, State, Status ' \ 
+                    'SELECT Order_ID, First_name, Pincode, Street, Landmark, City, State, Status ' \
                     'FROM  Customer INNER JOIN ' \
                     '(SELECT Order_ID, Customer_ID, Pincode, Street, Landmark, City, State, Status, ' \
                     'FROM Address INNER JOIN T1 ' \
@@ -53,11 +96,30 @@ class DeliveryExecutive :
     # @brief This method gives all the delivery executive of the system.
     #        Normally used by ADMIN
     @staticmethod
-    def get_all_deliveryexecutive(pysql) :
-        sql_stmt =  'SELECT ID, Name, Email, Salary, Phone1, Phone2, WorkTime ' \
-                    'FROM Product'
+    def get_all_deliveryexecutives(pysql) :
+        sql_stmt =  'SELECT ID, First_name, Last_name, Email, Password, Salary, Phone1, Phone2, WorkTime ' \
+                    'FROM DeliveryExecutive'
 
         pysql.run(sql_stmt)
         rows = pysql.result
 
         return rows 
+
+    # @brief This method changes the status of Order from "Not Delivered" to
+    #        "Delivered"
+    # @param Order_id (BUT HOW TO GET THE ORDER_ID FROM THE HTML PAGE!!!!)
+    # @retval 1 if success, else 0
+    @staticmethod
+    def change_delivery_status(pysql, order_id) :
+
+        sql_stmt =  'UPDATE Orders ' \
+                    'SET Status = "Delivered" ' \
+                    'WHERE Order_ID = %s' \
+
+        try :
+            pysql.run(sql_stmt, (order_id, ))
+            pysql.commit()
+            return 1
+
+        except :
+            return 0

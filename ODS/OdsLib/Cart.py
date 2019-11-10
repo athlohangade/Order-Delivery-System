@@ -33,16 +33,22 @@ class Cart :
         sql_stmt =  'UPDATE Cart ' \
                     'SET Prod_ID%s = %s' \
                     'WHERE Customer_ID = %s'
-        pysql.run(sql_stmt, (i, product_id, customer_id))
+        try :
+            pysql.run(sql_stmt, (i, product_id, customer_id))
+            pysql.commit()
+            return 1
 
-        return 1
+        except :
+            print('Cart is Full')
+            return 0
+
 
     # @brief This method deletes the product from the cart that is assigned to
     #        the customer. 
     # @retval The function return 1, if product is successfully added to the 
     #         cart. It returns 0 then the cart is full
     @staticmethod
-    def delete_product_to_cart(pysql, customer_id, product_id) :
+    def delete_product_from_cart(pysql, customer_id, product_id) :
         # Get the entries of prodID from cart for a particular customer
         sql_stmt =  'SELECT * FROM Cart ' \
                     'WHERE Customer_ID = %s'

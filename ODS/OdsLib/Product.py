@@ -6,7 +6,7 @@ next_product_id_read = 0
 product_shortforms = {'Mobile'  : 'MOB', 
                       'Laptop'  : 'LAP', 
                       'Books'   : 'BOK',
-                      'Sports'  : 'SPT',
+                      'Sport'  : 'SPT',
                       'Clothing': 'CLT'}
 
 # @brief This class is used to handle the product details and updation
@@ -15,7 +15,7 @@ product_shortforms = {'Mobile'  : 'MOB',
 class Product :
 
     # @brief The function is used to insert the product details entered by the
-    #        admin in the mysql database
+    #        ADMIN in the mysql database
     # @param pysql Pysql Object
     # @param Name of the parameter are self-explanatory (string)
     # @retval boolean returns the 1 if the entry is successfully inserted in the
@@ -31,12 +31,14 @@ class Product :
         pysql.run(sql_stmt)
         row = pysql.result
 
-        if row[1] == name and row[2] == category and row[5] ==  seller :
-            sql_stmt =  'UPDATE Product ' \
-                        'SET Quantity = Quantity + %s ' \
-                        'WHERE Product_ID = %s'
-            pysql.run(sql_stmt, (quantity, row[0]))
-            return 1
+        for i in range(0, len(row)) :
+            if row[i][1] == name and row[i][2] == category and row[i][5] ==  seller :
+                sql_stmt =  'UPDATE Product ' \
+                            'SET Quantity = Quantity + %s ' \
+                            'WHERE Product_ID = %s'
+                pysql.run(sql_stmt, (quantity, row[i][0]))
+                pysql.commit()
+                return 1
 
         # If the execution reaches here implies there is no entry for the
         # required product in the product. So assign an id and make an entry
@@ -56,7 +58,7 @@ class Product :
             next_product_id_read = 1
 
         # Now get the product_id 
-        product_id = product_shortforms[category] + format(next_product_id, '06d')
+        product_id = product_shortforms[category] + '-' + format(next_product_id, '06d')
 
         # Assign a random rating at start
         rating = random.uniform(0,5)
@@ -80,7 +82,7 @@ class Product :
 
     @staticmethod
     def get_product_by_category(pysql, category) :
-        sql_stmt =  'SELECT Name, Seller, Rating, Price ' \
+        sql_stmt =  'SELECT Product_ID, Name, Price, Rating, Seller ' \
                     'FROM Product ' \
                     'WHERE Category = %s'
 

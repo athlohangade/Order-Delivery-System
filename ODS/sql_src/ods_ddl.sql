@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS Product;
 DROP TABLE IF EXISTS Cart;
 DROP TABLE IF EXISTS Delivery;
-DROP TABLE IF EXISTS Delivery_Executive;
+DROP TABLE IF EXISTS DeliveryExecutive;
 
 -- Create the schemas
 
@@ -60,7 +60,7 @@ CREATE TABLE Orders (
     CONSTRAINT Orders_FK FOREIGN KEY (Customer_ID, Address_ID) REFERENCES Address (Customer_ID, Address_ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Delivery_Executive (
+CREATE TABLE DeliveryExecutive (
     ID              CHAR(6),
     First_name      VARCHAR(20),
     Last_name       VARCHAR(20),
@@ -70,20 +70,20 @@ CREATE TABLE Delivery_Executive (
     Salary          NUMERIC(6, 0) UNSIGNED DEFAULT 0,
     Phone1          CHAR(10),
     Phone2          CHAR(10),
-    CONSTRAINT Delivery_Executive_ID_FMT CHECK (ID REGEXP "^D[0-9]{5}$"),
-    CONSTRAINT Delivery_Executive_Email_FMT CHECK (Email REGEXP "^[a-zA-Z0-9_]{1,20}\.?[a-zA-Z0-9_]{0,5}@[a-z]{1,7}(\.com|\.ac\.in)$"),
-    CONSTRAINT Delivery_Executive_Password_FMT CHECK (Password REGEXP "^[a-zA-Z0-9@#&!\$]{8, 20}$"),
-    CONSTRAINT Delivery_Executive_Salary CHECK (Salary >= 0),
-    CONSTRAINT Delivery_Executive_Phone1_FMT CHECK (Phone1 REGEXP "^[0-9]{10}$"),
-    CONSTRAINT Delivery_Executive_Phone2_FMT CHECK (Phone2 REGEXP "^[0-9]{10}$"),
-    CONSTRAINT Delivery_Executive_PK PRIMARY KEY (ID)
+    CONSTRAINT DeliveryExecutive_ID_FMT CHECK (ID REGEXP "^D[0-9]{5}$"),
+    CONSTRAINT DeliveryExecutive_Email_FMT CHECK (Email REGEXP "^[a-zA-Z0-9_]{1,20}\.?[a-zA-Z0-9_]{0,5}@[a-z]{1,7}(\.com|\.ac\.in)$"),
+    CONSTRAINT DeliveryExecutive_Password_FMT CHECK (Password REGEXP "^[a-zA-Z0-9@#&!\$]{8,20}$"),
+    CONSTRAINT DeliveryExecutive_Salary CHECK (Salary >= 0),
+    CONSTRAINT DeliveryExecutive_Phone1_FMT CHECK (Phone1 REGEXP "^[0-9]{10}$"),
+    CONSTRAINT DeliveryExecutive_Phone2_FMT CHECK (Phone2 REGEXP "^[0-9]{10}$"),
+    CONSTRAINT DeliveryExecutive_PK PRIMARY KEY (ID)
 );
 
 CREATE TABLE Delivery (
     Order_ID        CHAR(10), 
     ID              CHAR(6),
     CONSTRAINT Delivery_FK_1 FOREIGN KEY (Order_ID) REFERENCES Orders (Order_ID) ON DELETE CASCADE,
-    CONSTRAINT Delivery_FK_2 FOREIGN KEY (ID) REFERENCES Delivery_Executive (ID) ON DELETE CASCADE,
+    CONSTRAINT Delivery_FK_2 FOREIGN KEY (ID) REFERENCES DeliveryExecutive (ID) ON DELETE CASCADE,
     CONSTRAINT Delivery_PK PRIMARY KEY (Order_ID, ID)
 );
 

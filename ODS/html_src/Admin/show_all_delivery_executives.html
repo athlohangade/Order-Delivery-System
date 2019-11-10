@@ -21,7 +21,8 @@
         <thead class="thead-light">
             <tr>
                 <th>Delivery Executive ID</th>
-                <th>Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Password</th>
                 <th>Salary</th>
@@ -31,7 +32,7 @@
             </tr>
         </thead>
         <tbody>
-             {% for row in product_details %}
+             {% for row in delivery_executive_details %}
              <tr>
                  {% for detail in row %}
                  <td>
@@ -44,6 +45,6 @@
     </table>
 </div>
 <br>
-<p class="text-center"><a href="#AdminActions" style="color:darkblue;">Back</a></p>
+<p class="text-center"><a href="AdminActions" style="color:darkblue;">Back</a></p>
 </body>
 </html>
