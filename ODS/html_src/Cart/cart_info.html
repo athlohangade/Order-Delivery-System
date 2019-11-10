@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopping Cart</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+    body {
+        color: #666;
+        background: #f5f5f5;
+		font-family: 'Roboto', sans-serif;
+	}
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+    }
+    table.table-striped tbody tr:nth-of-type(odd) {
+    	background-color: #fcfcfc;
+	}
+    .table-wrapper {
+        background: #fff;
+        padding: 20px;
+        margin: 30px 0;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .pagination {
+        margin: 10px 0 5px;
+    }
+    .pagination li a {
+        border: none;
+        min-width: 30px;
+        min-height: 30px;
+        color: #999;
+        margin: 0 2px;
+        line-height: 30px;
+        border-radius: 4px !important;
+        text-align: center;
+        padding: 0;
+    }
+    .pagination li a:hover {
+        color: #666;
+    }
+    .pagination li.active a, .pagination li.active a.page-link {
+        background: #59bdb3;
+    }
+    .pagination li.active a:hover {
+        background: #45aba0;
+    }
+    .pagination li:first-child a, .pagination li:last-child a {
+        padding: 0 10px;
+    }
+    .pagination li.disabled a {
+        color: #ccc;
+    }
+    .pagination li i {
+        font-size: 17px;
+        position: relative;
+        top: 1px;
+        margin: 0 2px;
+    }
+    .radiotext {
+    margin: 0px 0px 0px 0px;
+    }
+    input[type="radio"]{
+        margin: 0 0px 0 20px;
+    }
+    .section-wrap{
+    text-align:center;
+    }
+</style>
+</head>
+<body>
+    <form method="POST">
+    <div class="row text-center">
+        <br>
+        <h4 style="font-size:20px;color:#5C5C5C;">Your Shopping Cart:</h4>
+    </div>
+    <div class="container">
+        <div class="table-wrapper">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Seller</th>
+                        <th>Quantity added</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     {% for row in product_details %}
+                     <tr>
+                         {% for detail in row %}
+                         <td>
+                            {{ detail }}
+                        </td>
+                        {% endfor %}
+                     </tr>
+                     {% endfor %}
+                     <tr>
+                         <td></td>
+                         <td>Total</td>
+                         <td></td>
+                         <td></td>
+                         <td>{{ total }}</td>
+                     </tr>
+                 </tbody>
+            </table>
+        </div>
+        <div class="row text-center">
+            <br>
+            <h4 style="font-size:20px;color:#5C5C5C;">Choose an Address:</h4>
+        </div>
+        <div class="table-wrapper">
+    <table class="table table-striped">
+         <thead>
+                 <th>ID</th>
+                 <th>Pincode</th>
+                 <th>Street</th>
+                 <th>Landmark</th>
+                 <th>City</th>
+                 <th>State</th>
+                 <th>Type</th>
+         </thead>
+         <tbody>
+             {% for row in address_details %}
+             <tr>
+                 {% for detail in row %}
+                 <td>
+                     <div class="radio">
+                         <label><input type="radio" name="address_radio">{{ detail[0] }}</label>
+                     </div>
+                 </td>
+                 <td>
+                     {{ detail[1:] }}
+                 </td>
+             </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row text-center">
+    <br>
+    <h4 style="font-size:20px;color:#5C5C5C;">Payment Method:</h4>
+</div>
+<div class="custom-control custom-radio section-wrap">
+  <input type="radio" class="custom-control-input" id="debit_card" name="payment_method">
+  <label class="custom-control-label" for="payment_method">Debit Card</label>
+  <input type="radio" class="custom-control-input" id="credit_card" name="payment_method" checked>
+  <label class="custom-control-label" for="payment_method">Credit Card</label>
+  <input type="radio" class="custom-control-input" id="net_banking" name="payment_method">
+  <label class="custom-control-label" for="payment_method">Net Banking</label>
+  <input type="radio" class="custom-control-input" id="cash_on_delivery" name="payment_method">
+  <label class="custom-control-label" for="payment_method">Cash On Delivery</label>
+</div>
+</div><br>
+    <div class="row text-center">
+        <button class="btn btn-alert" type="submit" name="place_order" value="Place Order">Place Order!</button>
+            <br><br>
+        <p class="text-center"><a href="ProductCategory">Back to Product Category</a></p>
+    </div>
+    </form>
+</body>
+</html>
