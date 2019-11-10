@@ -17,15 +17,15 @@ class Customer :
     @staticmethod
     def check_customer_signin(pysql, email, password) :
         # Get the email and password entries from database
-        sql_stmt =  'SELECT Email, Password '\
+        sql_stmt =  'SELECT Customer_ID, Email, Password '\
                     'FROM Customer'
         pysql.run(sql_stmt)
         data = pysql.result
 
         # Check if the database has the required entry 
         for i in data :
-            if i[0] == email and i[1] == password :
-                return True 
+            if i[1] == email and i[2] == password :
+                return i[0] 
         return False 
 
 
@@ -63,9 +63,15 @@ class Customer :
 
             # Commit the changes to the remote database
             pysql.commit()
+            
+            sql_stmt =  'INSERT INTO Cart(Customer_ID) ' \
+                        'VALUES (%s)'
+            pysql.run(sql_stmt, (customer_id, ))
+            pysql.commit()
 
             # Next customer_id for further sign in
             next_customer_id += 1
             return customer_id
+
         except :
             return 0

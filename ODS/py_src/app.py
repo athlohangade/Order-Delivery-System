@@ -10,6 +10,10 @@ pysql = PySql(app, 'db.yaml')
 def index():
     return render_template('index.html')
 
+all_ids = {'customer_id' : None }
+
+
+
 
 #########   CUSTOMER RELATED FUNCTIONS ########
 
@@ -24,6 +28,7 @@ def customer_signin_page():
 
             # Check here the email-id and password entered with the sql database
             ans = Customer.check_customer_signin(pysql, email, password)
+            all_ids['customer_id'] = ans
 
             if ans :
                 print("Logged In")
@@ -75,7 +80,36 @@ def product_mobile() :
 def product_laptop() :
     pysql.init()
     product_details = Product.get_product_by_category(pysql, 'Laptop')
+    global all_ids
+
+    if request.method == 'POST' :
+
+        if 'buy_now' in request.form :
+            # get the quantities of product selected by customer
+            quantities = request.form.getlist("quantity[]")
+            for i in range(len(quantities)) :
+                quantities[i] = int(quantities[i])
+
+            # check if adding the quantities to the cart doesn't exceed cart limit
+            if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
+                print("Max cart limit reached")
+                return render_template('/Product/product_laptop.html', product_details = product_details)
+
+            # Add the product to the cart whose quantity value is greater than zero
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    for j in range(0, quantities[i]) :
+                        Cart.add_product_to_cart(pysql, all_ids['customer_id'],
+                                product_details[i][0])
+
+            return redirect('/CartInfo')
+
     return render_template('/Product/product_laptop.html', product_details = product_details)
+
+
+@app.route('/CartInfo', methods = ['GET', 'POST'])
+def view_cart() :
+    pass
 
 
 @app.route('/ProductClothing', methods = ['GET', 'POST'])

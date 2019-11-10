@@ -68,6 +68,7 @@
 </style>
 </head>
 <body>
+    <form method="POST">
     <div class="row text-center">
         <br>
         <h2 style="font-size:20px;color:#5C5C5C;">Product Category: Laptop</h2>
@@ -94,7 +95,7 @@
                         </td>
                         {% endfor %}
                         <td>
-                            <input id="quantity" name="quantity" size="5" style="text-align: right" type="text" value="0">
+                            <input id="quantity" name="quantity[]" size="5" style="text-align: right" type="text" value="0">
                         </td>
                      </tr>
                      {% endfor %}
@@ -103,9 +104,10 @@
         </div>
     </div>
     <div class="row text-center">
-        <button type="submit" class="btn btn-primary" name="buy_now">Buy Now!</button>
-        <br><br>
-        <p class="text-center"><a href="ProductCategory">Back to Product Category</a></p>
+        <button class="btn btn-primary" type="submit" name="buy_now" value="Buy Now!">Buy Now!</button>
+            <br><br>
+        <p class="text-center"><a href="UserInfoProducts">Back to Product Category</a></p>
     </div>
+    </form>
 </body>
 </html>

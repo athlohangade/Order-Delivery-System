@@ -103,11 +103,11 @@ CREATE TABLE Product (
 
 CREATE TABLE Cart (
     Customer_ID     CHAR(6),
-    Prod_ID1        CHAR(6),
-    Prod_ID2        CHAR(6),
-    Prod_ID3        CHAR(6),
-    Prod_ID4        CHAR(6),
-    Prod_ID5        CHAR(6),
+    Prod_ID1        CHAR(10),
+    Prod_ID2        CHAR(10),
+    Prod_ID3        CHAR(10),
+    Prod_ID4        CHAR(10),
+    Prod_ID5        CHAR(10),
     CONSTRAINT Cart_Customer_ID_FK FOREIGN KEY (Customer_ID) REFERENCES Customer (Customer_ID) ON DELETE CASCADE,
     CONSTRAINT Cart_Prod_ID1_FK FOREIGN KEY (Prod_ID1) REFERENCES Product (Product_ID) ON DELETE SET NULL,
     CONSTRAINT Cart_Prod_ID2_FK FOREIGN KEY (Prod_ID2) REFERENCES Product (Product_ID) ON DELETE SET NULL,
