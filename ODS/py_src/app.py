@@ -32,7 +32,7 @@ def customer_signin_page():
 
             if ans :
                 print("Logged In")
-                return redirect('/UserInfoProducts')
+                return redirect('/ProductCategory')
             else :
                 print("Invalid Email or Password")
 
@@ -64,15 +64,44 @@ def customer_signup_page() :
     return render_template('/CustomerSignIn/customer_signup.html')
 
 
-@app.route('/UserInfoProducts', methods = ['GET', 'POST'])
+@app.route('/ProductCategory', methods = ['GET', 'POST'])
 def user_page() :
     return render_template('/Product/product_category.html')
+
+
+#@app.route('/YourOrders', methods = ['GET', 'POST'])
+#def show_orders() :
+
 
 
 @app.route('/ProductMobile', methods = ['GET', 'POST'])
 def product_mobile() :
     pysql.init()
     product_details = Product.get_product_by_category(pysql, 'Mobile')
+    global all_ids
+
+    if request.method == 'POST' :
+
+        if 'buy_now' in request.form :
+            # get the quantities of product selected by customer
+            quantities = request.form.getlist("quantity[]")
+            for i in range(len(quantities)) :
+                quantities[i] = int(quantities[i])
+
+            # check if adding the quantities to the cart doesn't exceed cart limit
+            if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
+                print("Max cart limit reached")
+                return render_template('/Product/product_mobile.html', product_details = product_details)
+
+            # Add the product to the cart whose quantity value is greater than zero
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    for j in range(0, quantities[i]) :
+                        Cart.add_product_to_cart(pysql, all_ids['customer_id'],
+                                product_details[i][0])
+
+            return redirect('/CartInfo')
+
     return render_template('/Product/product_mobile.html', product_details = product_details)
 
 
@@ -107,15 +136,35 @@ def product_laptop() :
     return render_template('/Product/product_laptop.html', product_details = product_details)
 
 
-@app.route('/CartInfo', methods = ['GET', 'POST'])
-def view_cart() :
-    pass
-
 
 @app.route('/ProductClothing', methods = ['GET', 'POST'])
 def product_clothing() :
     pysql.init()
     product_details = Product.get_product_by_category(pysql, 'Clothing')
+    global all_ids
+
+    if request.method == 'POST' :
+
+        if 'buy_now' in request.form :
+            # get the quantities of product selected by customer
+            quantities = request.form.getlist("quantity[]")
+            for i in range(len(quantities)) :
+                quantities[i] = int(quantities[i])
+
+            # check if adding the quantities to the cart doesn't exceed cart limit
+            if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
+                print("Max cart limit reached")
+                return render_template('/Product/product_clothing.html', product_details = product_details)
+
+            # Add the product to the cart whose quantity value is greater than zero
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    for j in range(0, quantities[i]) :
+                        Cart.add_product_to_cart(pysql, all_ids['customer_id'],
+                                product_details[i][0])
+
+            return redirect('/CartInfo')
+
     return render_template('/Product/product_clothing.html', product_details = product_details)
 
 
@@ -123,6 +172,30 @@ def product_clothing() :
 def product_sport() :
     pysql.init()
     product_details = Product.get_product_by_category(pysql, 'Sport')
+    global all_ids
+
+    if request.method == 'POST' :
+
+        if 'buy_now' in request.form :
+            # get the quantities of product selected by customer
+            quantities = request.form.getlist("quantity[]")
+            for i in range(len(quantities)) :
+                quantities[i] = int(quantities[i])
+
+            # check if adding the quantities to the cart doesn't exceed cart limit
+            if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
+                print("Max cart limit reached")
+                return render_template('/Product/product_sport.html', product_details = product_details)
+
+            # Add the product to the cart whose quantity value is greater than zero
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    for j in range(0, quantities[i]) :
+                        Cart.add_product_to_cart(pysql, all_ids['customer_id'],
+                                product_details[i][0])
+
+            return redirect('/CartInfo')
+
     return render_template('/Product/product_sport.html', product_details = product_details)
 
 
@@ -130,8 +203,54 @@ def product_sport() :
 def product_books() :
     pysql.init()
     product_details = Product.get_product_by_category(pysql, 'Books')
+    global all_ids
+
+    if request.method == 'POST' :
+
+        if 'buy_now' in request.form :
+            # get the quantities of product selected by customer
+            quantities = request.form.getlist("quantity[]")
+            for i in range(len(quantities)) :
+                quantities[i] = int(quantities[i])
+
+            # check if adding the quantities to the cart doesn't exceed cart limit
+            if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
+                print("Max cart limit reached")
+                return render_template('/Product/product_books.html', product_details = product_details)
+
+            # Add the product to the cart whose quantity value is greater than zero
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    for j in range(0, quantities[i]) :
+                        Cart.add_product_to_cart(pysql, all_ids['customer_id'],
+                                product_details[i][0])
+
+            return redirect('/CartInfo')
+
     return render_template('/Product/product_books.html', product_details = product_details)
 
+
+@app.route('/CartInfo', methods = ['GET', 'POST'])
+def view_cart() :
+
+    pysql.init()
+    global all_ids
+
+    prodids_incart = Cart.get_prod_in_cart(pysql, all_ids['customer_id'])
+    prodids_incart = prodids_incart[0]
+    print(prodids_incart)
+
+    total = Cart.get_total(pysql, all_ids['customer_id'])
+
+    product_details = []
+    for i in prodids_incart :
+        if i is not None :
+            ans = Product.get_product_details(pysql, i)
+            ans = ans[0]
+            product_details.append(ans)
+
+    return render_template('/Cart/cart_info.html', product_details =
+            product_details, total = total)
 
 
 #########   ADMIN RELATED FUNCTIONS ########

@@ -81,6 +81,19 @@ class Product :
 
 
     @staticmethod
+    def get_product_details(pysql, product_id) :
+        sql_stmt =  'SELECT Product_ID, Name, Category, Seller, Price ' \
+                    'FROM Product ' \
+                    'WHERE Product_ID = %s'
+
+        pysql.run(sql_stmt, (product_id, ))
+        products = pysql.result
+
+        return products
+
+
+
+    @staticmethod
     def get_product_by_category(pysql, category) :
         sql_stmt =  'SELECT Product_ID, Name, Price, Rating, Seller ' \
                     'FROM Product ' \
@@ -171,5 +184,4 @@ class Product :
         products = pysql.result
 
         return products
-
 

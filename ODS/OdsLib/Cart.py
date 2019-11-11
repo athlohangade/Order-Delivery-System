@@ -65,7 +65,7 @@ class Cart :
                 break
             i += 1
         
-        return i
+        return (i - 1)
 
 
     # @brief This method deletes the product from the cart that is assigned to
@@ -102,3 +102,35 @@ class Cart :
         pysql.commit()
 
         return 1
+
+
+    @staticmethod
+    def get_prod_in_cart(pysql, customer_id) :
+        # Get the entries of prodID from cart for a particular customer
+        sql_stmt =  'SELECT Prod_ID1, Prod_ID2, Prod_ID3, Prod_ID4, Prod_ID5 ' \
+                    'FROM Cart ' \
+                    'WHERE Customer_ID = %s'
+
+        pysql.run(sql_stmt, (customer_id, ))
+        products = pysql.result
+        return products
+   
+
+    @staticmethod
+    def get_total(pysql, customer_id) :
+
+        product_ids = Cart.get_prod_in_cart(pysql, customer_id)
+
+        total = 0
+        for i in range(0, Cart.get_no_of_products_in_cart(pysql, customer_id)) :
+
+            sql_stmt =  'SELECT Price ' \
+                        'FROM Product ' \
+                        'WHERE Product_ID = %s'
+
+            pysql.run(sql_stmt, (product_ids[0][i], ))
+            ans = pysql.result
+            total += int(ans[0][0])
+   
+        return total 
+
