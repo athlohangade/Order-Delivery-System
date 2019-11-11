@@ -1,5 +1,5 @@
 -- Drop database CMS if exists
-
+DROP DATABASE IF EXISTS ODS;
 CREATE DATABASE ODS;
 USE ODS;
 
