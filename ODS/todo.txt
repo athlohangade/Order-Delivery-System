@@ -3,5 +3,6 @@
                      Also make "name" attribute before the "category" attribute
                      in product table
 -- Ordering by both price and rating to be discussed with Mayank.
--- Prepare a table "order " having 'orderid' and 'productid' together as primary
-    key
+-- Prepare a table "orderdetails" having 'orderid' and 'productid' together as 
+    primary key
+-- Add "clear cart" button in cart_info.html
