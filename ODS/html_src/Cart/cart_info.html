@@ -101,10 +101,12 @@
                          {% for detail in row %}
                          <td>
                             {{ detail }}
-                        </td>
-                        {% endfor %}
+                         </td>
+                         {% endfor %}
                      </tr>
                      {% endfor %}
+                     <tr height=35px>
+                     </tr>
                      <tr>
                          <td></td>
                          <td>Total</td>
@@ -142,7 +144,9 @@
                  <td>
                      {{ detail[1:] }}
                  </td>
+                {% endfor %}
              </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
@@ -162,7 +166,10 @@
 </div>
 </div><br>
     <div class="row text-center">
-        <button class="btn btn-alert" type="submit" name="place_order" value="Place Order">Place Order!</button>
+        <button class="btn btn-primary" type="submit" name="place_order" value="Place Order">Place Order!</button>
+            <br><br>
+        <button class="btn btn-primary" type="submit" name="clear_cart"
+            value="Clear Cart">Clear Cart</button>
             <br><br>
         <p class="text-center"><a href="ProductCategory">Back to Product Category</a></p>
     </div>
