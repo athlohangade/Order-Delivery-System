@@ -24,7 +24,7 @@ def customer_signin_page():
     if request.method == 'POST' :
         if 'customer_login' in request.form :
             email = request.form['customer_email']
-            password = request.form['customer_password'] 
+            password = request.form['customer_password']
 
             # Check here the email-id and password entered with the sql database
             ans = Customer.check_customer_signin(pysql, email, password)
@@ -53,7 +53,7 @@ def customer_signup_page() :
             confirmpassword = userDetails['customer_confirmpassword']
             phone1 = userDetails['customer_phone1']
             phone2 = userDetails['customer_phone2']
-         
+
             if password == confirmpassword :
 
                 # Add the details to the sql database
@@ -235,22 +235,37 @@ def view_cart() :
 
     pysql.init()
     global all_ids
-
-    prodids_incart = Cart.get_prod_in_cart(pysql, all_ids['customer_id'])
-    prodids_incart = prodids_incart[0]
-    print(prodids_incart)
-
-    total = Cart.get_total(pysql, all_ids['customer_id'])
-
     product_details = []
-    for i in prodids_incart :
-        if i is not None :
-            ans = Product.get_product_details(pysql, i)
-            ans = ans[0]
-            product_details.append(ans)
+    total = 0
 
-    return render_template('/Cart/cart_info.html', product_details =
-            product_details, total = total)
+    # Shopping Cart
+
+    if 'clear_cart' in request.form :
+        Cart.clear_cart(pysql, all_ids['customer_id'])
+
+    # If place_order button is pressed
+    elif 'place_order' in request.form :
+        redirect('/PlaceOrder')
+
+    # Show current products in cart
+    else :
+        prodids_incart = Cart.get_prod_in_cart(pysql, all_ids['customer_id'])
+        prodids_incart = prodids_incart[0]
+
+        total = Cart.get_total(pysql, all_ids['customer_id'])
+
+        for i in prodids_incart :
+            if i is not None :
+                ans = Product.get_product_details(pysql, i)
+                ans = ans[0]
+                product_details.append(ans)
+
+    # Choose Address
+
+    address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
+
+
+    return render_template('/Cart/cart_info.html', product_details = product_details, total = total, address_details = address_details)
 
 
 #########   ADMIN RELATED FUNCTIONS ########
@@ -261,9 +276,9 @@ def admin_signin_page():
     if request.method == 'POST' :
         if 'admin_login' in request.form :
             email = request.form['admin_email']
-            password = request.form['admin_password'] 
+            password = request.form['admin_password']
 
-            # Check here the email-id and password entered 
+            # Check here the email-id and password entered
             if email == 'atharva' and password == 'atharva' :
                 print("Logged In")
                 return redirect('/AdminActions')
@@ -271,7 +286,7 @@ def admin_signin_page():
                 print("Invalid Email or Password")
 
     return render_template('/Admin/admin_signin.html')
-    
+
 
 @app.route('/AdminActions', methods = ['GET', 'POST'])
 def select_admin_action() :
@@ -282,14 +297,14 @@ def select_admin_action() :
                    'show_all_products',
                    'show_all_delivery_executives']
 
-        # Check if any option is selected 
+        # Check if any option is selected
         for option in options:
             if option in request.form:
                 return redirect('/' + option)
                 '''
     return render_template('/Admin/admin_actions.html')
 
- 
+
 @app.route('/InsertProduct', methods = ['GET', 'POST'])
 def add_products() :
     pysql.init()
@@ -360,23 +375,37 @@ def deliveryexecutive_signin_page() :
     if request.method == 'POST' :
         if 'deliveryexecutive_login' in request.form:
             email = request.form['deliveryexecutive_email']
-            password = request.form['deliveryexecutive_password'] 
-            
+            password = request.form['deliveryexecutive_password']
+
             # Check here the email-id and password entered with the sql database
             ans = DeliveryExecutive.check_deliveryexecutive_signin(pysql, email, password)
-
+            all_ids['deliveryexecutive_id'] = ans
             if ans :
                 print("Logged In")
-                return redirect('DeliveryExecutiveSignIn/DeliveryDetails')
+                return redirect('/DeliveryDetails')
             else :
                 print("Invalid Email or Password")
 
     return render_template('/DeliveryExecutiveSignIn/deliveryexecutive_signin.html')
 
 
-@app.route('/DeliveryExecutiveSignIn/DeliveryDetails', methods = ['GET', 'POST'])
+@app.route('/DeliveryDetails', methods = ['GET', 'POST'])
 def delivery_details_page() :
-    pass
+    pysql.init()
+    undelivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 0)
+    delivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 1)
+
+    if request.method == 'POST' :
+        order_ids = []
+        for i in undelivered_details:
+        order_ids.append(i[0])
+
+        selected_order_id = request.form["delivered"]
+        for i in order_ids:
+            if selected_order_id == i:
+                DeliveryExecutive.change_delivery_status(pysql, selected_order_id)
+
+    return render_template('/DeliveryExecutiveSignIn/delivery_details.html', undelivered_details = undelivered_details, delivered_details = delivered_details)
 
 if __name__ == "__main__" :
     app.run(debug = True)
