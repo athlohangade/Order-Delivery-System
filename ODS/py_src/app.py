@@ -235,22 +235,37 @@ def view_cart() :
 
     pysql.init()
     global all_ids
-
-    prodids_incart = Cart.get_prod_in_cart(pysql, all_ids['customer_id'])
-    prodids_incart = prodids_incart[0]
-    print(prodids_incart)
-
-    total = Cart.get_total(pysql, all_ids['customer_id'])
-
     product_details = []
-    for i in prodids_incart :
-        if i is not None :
-            ans = Product.get_product_details(pysql, i)
-            ans = ans[0]
-            product_details.append(ans)
+    total = 0
 
-    return render_template('/Cart/cart_info.html', product_details =
-            product_details, total = total)
+    # Shopping Cart 
+    
+    if 'clear_cart' in request.form :
+        Cart.clear_cart(pysql, all_ids['customer_id'])
+
+    # If place_order button is pressed
+    elif 'place_order' in request.form :
+        redirect('/PlaceOrder')
+
+    # Show current products in cart
+    else :
+        prodids_incart = Cart.get_prod_in_cart(pysql, all_ids['customer_id'])
+        prodids_incart = prodids_incart[0]
+
+        total = Cart.get_total(pysql, all_ids['customer_id'])
+
+        for i in prodids_incart :
+            if i is not None :
+                ans = Product.get_product_details(pysql, i)
+                ans = ans[0]
+                product_details.append(ans)
+
+    # Choose Address
+
+    address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
+    
+
+    return render_template('/Cart/cart_info.html', product_details = product_details, total = total, address_details = address_details)
 
 
 #########   ADMIN RELATED FUNCTIONS ########
@@ -367,14 +382,14 @@ def deliveryexecutive_signin_page() :
 
             if ans :
                 print("Logged In")
-                return redirect('DeliveryExecutiveSignIn/DeliveryDetails')
+                return redirect('/DeliveryDetails')
             else :
                 print("Invalid Email or Password")
 
     return render_template('/DeliveryExecutiveSignIn/deliveryexecutive_signin.html')
 
 
-@app.route('/DeliveryExecutiveSignIn/DeliveryDetails', methods = ['GET', 'POST'])
+@app.route('/DeliveryDetails', methods = ['GET', 'POST'])
 def delivery_details_page() :
     pass
 
