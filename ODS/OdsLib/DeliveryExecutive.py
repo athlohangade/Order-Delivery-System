@@ -17,15 +17,15 @@ class DeliveryExecutive :
     @staticmethod
     def check_deliveryexecutive_signin(pysql, email, password) :
         # Get the email and password entries from database
-        sql_stmt =  'SELECT Email, Password ' \
+        sql_stmt =  'SELECT ID, Email, Password ' \
                     'FROM DeliveryExecutive'
         pysql.run(sql_stmt)
         data = pysql.result
 
         # Check if the database has the required entry
         for i in data :
-            if i[0] == email and i[1] == password :
-                return True
+            if i[1] == email and i[2] == password :
+                return i[0] 
         return False
 
 
@@ -84,7 +84,8 @@ class DeliveryExecutive :
                             'WHERE Order_ID in ( ' \
                                 'SELECT Order_ID ' \
                                 'FROM Delivery ' \
-                                'WHERE ID = %s AND Status = "Not Delivered")) ' \
+                                'WHERE ID = %s) ' \
+                            'AND Status = "Not Delivered") ' \
                         'SELECT Order_ID, Payment_Method, Total_Price, Pincode, Street, Landmark, City, State, Type, Status ' \
                         'FROM Address INNER JOIN T1 ' \
                         'ON Address.Address_ID = T1.Address_ID'
@@ -95,7 +96,8 @@ class DeliveryExecutive :
                             'WHERE Order_ID in ( ' \
                                 'SELECT Order_ID ' \
                                 'FROM Delivery ' \
-                                'WHERE ID = %s AND Status = "Delivered")) ' \
+                                'WHERE ID = %s) ' \
+                            'AND Status = "Delivered") ' \
                         'SELECT Order_ID, Payment_Method, Total_Price, Pincode, Street, Landmark, City, State, Type, Status ' \
                         'FROM Address INNER JOIN T1 ' \
                         'ON Address.Address_ID = T1.Address_ID'

@@ -75,3 +75,39 @@ class Customer :
 
         except :
             return 0
+
+
+    # @brief The method the profile of the customer.
+    # @param pysql Pysql Object
+    # @param Name of the parameter are self-explanatory (string)
+    # @retval boolean returns the profile is updated sucessfully, else 0
+    @staticmethod
+    def get_customer_profile(pysql, customer_id) :
+        sql_stmt =  'SELECT First_name, Last_name, Email, Phone1, Phone2 ' \
+                    'FROM Customer ' \
+                    'WHERE Customer_ID = %s'
+        try :
+            pysql.run(sql_stmt, (customer_id, )) 
+            profile = pysql.result
+            return profile
+
+        except :
+            return 0
+
+
+    # @brief The method is used to update the profile of the customer.
+    # @param pysql Pysql Object
+    # @param Name of the parameter are self-explanatory (string)
+    # @retval boolean returns the if the profile is updated sucessfully, else 0
+    @staticmethod
+    def update_customer_profile(pysql, customer_id, first_name, last_name, email, phone1, phone2) :
+        sql_stmt =  'UPDATE Customer ' \
+                    'SET First_name = %s, Last_name = %s, Email = %s, Phone1 = %s, Phone2 = %s ' \
+                    'WHERE Customer_ID = %s'
+        try :
+            pysql.run(sql_stmt, (first_name, last_name, email, phone1, phone2, customer_id))
+            pysql.commit()
+            return 1
+
+        except :
+            return 0
