@@ -238,8 +238,8 @@ def view_cart() :
     product_details = []
     total = 0
 
-    # Shopping Cart 
-    
+    # Shopping Cart
+
     if 'clear_cart' in request.form :
         Cart.clear_cart(pysql, all_ids['customer_id'])
 
@@ -263,7 +263,7 @@ def view_cart() :
     # Choose Address
 
     address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
-    
+
 
     return render_template('/Cart/cart_info.html', product_details = product_details, total = total, address_details = address_details)
 
