@@ -121,6 +121,5 @@ CREATE TABLE OrderDetails (
     Order_ID        CHAR(10),
     Product_ID      CHAR(10),
     CONSTRAINT OrderDetails_FK_1 FOREIGN KEY (Order_ID) REFERENCES Orders (Order_ID) ON DELETE CASCADE,
-    CONSTRAINT OrderDetails_FK_2 FOREIGN KEY (Product_ID) REFERENCES Product (Product_ID) ON DELETE CASCADE,
-    CONSTRAINT OrderDetails_PK PRIMARY KEY (Order_ID, Product_ID)
+    CONSTRAINT OrderDetails_FK_2 FOREIGN KEY (Product_ID) REFERENCES Product (Product_ID) ON DELETE CASCADE
 );
