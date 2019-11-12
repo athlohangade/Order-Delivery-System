@@ -11,11 +11,11 @@ class Orders :
     # @retval Return 1 if entry added successfully, else 0
     @staticmethod
     def place_order(pysql, customer_id, address_id, payment_method) :
-        
+
         letters = list(map(chr, range(ord('A'), ord('Z')+1)))
         l1 = letters[random.choice([i for i in range(0, 26)])]
         l2 = letters[random.choice([i for i in range(0, 26)])]
-        
+
         # Fetch the global variables
         global next_order_id
         global next_order_id_read
@@ -28,11 +28,11 @@ class Orders :
                         'FROM Orders'
             pysql.run(sql_stmt)
             next_order_id = pysql.scalar_result
-            next_order_id_read = 1 
+            next_order_id_read = 1
 
         # Now get the order_id
         order_id = l1 + l2 + '-' + format(next_order_id, '07d')
-        
+
         # Find total. Use the cart table and product table
         sql_stmt =  'SELECT * ' \
                     'FROM Cart ' \
@@ -51,9 +51,9 @@ class Orders :
 
         # Make an entry in the database
         sql_stmt =  'INSERT INTO Product ' \
-                    'VALUES (%s, %s, %s, %s, %s, %s, (SELECT CURRENT_TIMESTAMP))' 
+                    'VALUES (%s, %s, %s, %s, %s, %s, (SELECT CURRENT_TIMESTAMP))'
 
-        try :        
+        try :
             pysql.run(sql_stmt, (order_id, customer_id, address_id, total, payment_method, "Not Delivered"))
 
             # Commit the changes to the remote database
@@ -61,7 +61,7 @@ class Orders :
 
             # Next order id
             next_order_id += 1
-            
+
             # Add the (order_id, product_id) combination in OrderDetails Table
             for i in range(1, 6) :
                 sql_stmt =  'INSERT INTO OrderDetails ' \
@@ -77,3 +77,15 @@ class Orders :
 
         except :
             return 0
+
+    @staticmethod
+    def get_order_details(pysql, customer_id) :
+        #TODO: CHANGE SQL statement 
+        sql_stmt =  'SELECT Order_Date, Order_ID, Product.Name, Payment_Method, Address_ID, Total_Price, Status ' \
+                    'FROM Order INNER JOIN OrderDetails ON Orders.Order_ID = OrderDetails.Order_ID ' \
+                    'WHERE Customer_ID = %s'
+
+        pysql.run(sql_stmt, (customer_id, ))
+        orders = pysql.result
+
+        return orders

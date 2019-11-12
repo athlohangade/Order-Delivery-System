@@ -69,10 +69,11 @@ def user_page() :
     return render_template('/Product/product_category.html')
 
 
-#@app.route('/YourOrders', methods = ['GET', 'POST'])
-#def show_orders() :
-
-
+@app.route('/YourOrders', methods = ['GET', 'POST'])
+def show_orders() :
+    pysql.init()
+    order_details = Orders.get_order_details(pysql, all_ids['customer_id'])
+    return render_template('/CustomerSignIn/your_orders.html', order_details = order_details)
 
 @app.route('/ProductMobile', methods = ['GET', 'POST'])
 def product_mobile() :
@@ -398,7 +399,7 @@ def delivery_details_page() :
     if request.method == 'POST' :
         order_ids = []
         for i in undelivered_details:
-        order_ids.append(i[0])
+            order_ids.append(i[0])
 
         selected_order_id = request.form["delivered"]
         for i in order_ids:
