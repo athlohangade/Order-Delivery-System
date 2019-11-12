@@ -3,7 +3,7 @@ next_deliveryexecutive_id = None
 # This variable indicates whether the next_deliveryexecutive_id has been initialized
 next_deliveryexecutive_id_read = 0
 
-# @brief This class is used to handle the Delivery Executive data in ODS 
+# @brief This class is used to handle the Delivery Executive data in ODS
 # @note  There is not need to create an object of this class as all
 #        methods in this class are static
 class DeliveryExecutive :
@@ -22,18 +22,18 @@ class DeliveryExecutive :
         pysql.run(sql_stmt)
         data = pysql.result
 
-        # Check if the database has the required entry 
+        # Check if the database has the required entry
         for i in data :
             if i[0] == email and i[1] == password :
-                return True 
-        return False 
+                return True
+        return False
 
 
     # @brief The function is used to add delivery executive to the sql database.
     #        This is used by ADMIN
     # @param pysql Pysql Object
     # @param Name of the parameter are self-explanatory (string)
-    # @retval boolean returns the deliveryexecutive_id allocated for that entry 
+    # @retval boolean returns the deliveryexecutive_id allocated for that entry
     #         if the entry is successfully inserted in the database, else 0
     @staticmethod
     def add_deliveryexecutive(pysql, firstname, lastname, email, password, worktime, salary, phone1, phone2) :
@@ -49,16 +49,16 @@ class DeliveryExecutive :
                         'FROM DeliveryExecutive'
             pysql.run(sql_stmt)
             next_deliveryexecutive_id = pysql.scalar_result
-            next_deliveryexecutive_id_read = 1 
+            next_deliveryexecutive_id_read = 1
 
         # Now get the deliveryexecutive_id
         deliveryexecutive_id = 'D' + format(next_deliveryexecutive_id, '05d')
 
         # Make an entry in the database
         sql_stmt =  'INSERT INTO DeliveryExecutive ' \
-                    'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)' 
+                    'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
-        try : 
+        try :
             pysql.run(sql_stmt, (deliveryexecutive_id, firstname, lastname, email, password, worktime, salary, phone1, phone2))
 
             # Commit the changes to the remote database
@@ -72,23 +72,34 @@ class DeliveryExecutive :
             return 0
 
     # @brief This method returns the orders that are delivered or to be
-    #        delivered by the executive
+    #        delivered by the executive depending on flag
     # @retval List containing orderid, customername, address details (pincode,
     #         street, landmark, city, state), orderstatus.
     @staticmethod
-    def get_orders_details(pysql, deliveryexecutive_id) :
-        sql_stmt =  'WITH T1 AS ( ' \
-                        'SELECT Order_ID, Address_ID, Status ' \
-                        'FROM Orders ' \
-                        'WHERE Order_ID in ( ' \
-                            'SELECT Order_ID from Delivery ' \
-                            'WHERE ID = %s)) ' \
-                    'SELECT Order_ID, First_name, Pincode, Street, Landmark, City, State, Status ' \
-                    'FROM  Customer INNER JOIN ' \
-                    '(SELECT Order_ID, Customer_ID, Pincode, Street, Landmark, City, State, Status, ' \
-                    'FROM Address INNER JOIN T1 ' \
-                    'ON Address.Address_ID=T1.Address_ID) AS T2 ' \
-                    'WHERE Customer.Customer_ID=T2.Customer_ID'
+    def get_orders_details(pysql, deliveryexecutive_id, flag = 0) :
+        if flag == 0:
+            sql_stmt =  'WITH T1 AS ( ' \
+                            'SELECT Order_ID, Address_ID, Payment_Method, Total_Price, Status ' \
+                            'FROM Orders ' \
+                            'WHERE Order_ID in ( ' \
+                                'SELECT Order_ID ' \
+                                'FROM Delivery ' \
+                                'WHERE ID = %s AND Status = "Not Delivered")) ' \
+                        'SELECT Order_ID, Payment_Method, Total_Price, Pincode, Street, Landmark, City, State, Type, Status ' \
+                        'FROM Address INNER JOIN T1 ' \
+                        'ON Address.Address_ID = T1.Address_ID'
+        else:
+            sql_stmt =  'WITH T1 AS ( ' \
+                            'SELECT Order_ID, Address_ID, Payment_Method, Total_Price, Status ' \
+                            'FROM Orders ' \
+                            'WHERE Order_ID in ( ' \
+                                'SELECT Order_ID ' \
+                                'FROM Delivery ' \
+                                'WHERE ID = %s AND Status = "Delivered")) ' \
+                        'SELECT Order_ID, Payment_Method, Total_Price, Pincode, Street, Landmark, City, State, Type, Status ' \
+                        'FROM Address INNER JOIN T1 ' \
+                        'ON Address.Address_ID = T1.Address_ID'
+
         pysql.run(sql_stmt, (deliveryexecutive_id, ))
         row = pysql.result
         return row
@@ -103,7 +114,7 @@ class DeliveryExecutive :
         pysql.run(sql_stmt)
         rows = pysql.result
 
-        return rows 
+        return rows
 
     # @brief This method changes the status of Order from "Not Delivered" to
     #        "Delivered"
@@ -114,7 +125,7 @@ class DeliveryExecutive :
 
         sql_stmt =  'UPDATE Orders ' \
                     'SET Status = "Delivered" ' \
-                    'WHERE Order_ID = %s' \
+                    'WHERE Order_ID = %s'
 
         try :
             pysql.run(sql_stmt, (order_id, ))
