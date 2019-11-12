@@ -70,10 +70,9 @@ class Orders :
                 pysql.commit()
 
             # Empty the Cart
-            sql_stmt =  'DELETE FROM Cart ' \
-                        'WHERE Customer_ID = %s'
-            pysql.run(sql_stmt, (customer_id, ))
-            pysql.commit()
+            Cart.clear_cart(pysql, customer_id)
+
+            ### TODO : Assign Delivery Executive
 
         except :
             return 0
