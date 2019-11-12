@@ -10,7 +10,9 @@ pysql = PySql(app, 'db.yaml')
 def index():
     return render_template('index.html')
 
-all_ids = {'customer_id' : None }
+all_ids = { 'customer_id'   : None,
+            'address_id'    : None,
+            'payment_method': None } 
 
 
 
@@ -68,12 +70,6 @@ def customer_signup_page() :
 def user_page() :
     return render_template('/Product/product_category.html')
 
-
-@app.route('/YourOrders', methods = ['GET', 'POST'])
-def show_orders() :
-    pysql.init()
-    order_details = Orders.get_order_details(pysql, all_ids['customer_id'])
-    return render_template('/CustomerSignIn/your_orders.html', order_details = order_details)
 
 @app.route('/ProductMobile', methods = ['GET', 'POST'])
 def product_mobile() :
@@ -241,17 +237,18 @@ def view_cart() :
 
     # Shopping Cart
 
-    if 'clear_cart' in request.form :
-        Cart.clear_cart(pysql, all_ids['customer_id'])
+    if request.method == 'POST' :
+        if 'clear_cart' in request.form :
+            Cart.clear_cart(pysql, all_ids['customer_id'])
 
-    # If place_order button is pressed
-    elif 'place_order' in request.form :
-        selected_address_id = request.form['address_radio']
-        print(selected_address_id)
+        # If place_order button is pressed
+        elif 'place_order' in request.form :
+            selected_address_id = request.form['address_radio']
+            all_ids['address_id'] = selected_address_id
 
-        selected_payment_method = request.form['payment_method']
-        print(selected_payment_method)
-        redirect('/PlaceOrder')
+            selected_payment_method = request.form['payment_method']
+            all_ids['payment_method'] = selected_payment_method 
+            return redirect('/PlaceOrder')
 
     # Show current products in cart
     else :
@@ -269,9 +266,82 @@ def view_cart() :
     # Choose Address
 
     address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
-
-
     return render_template('/Cart/cart_info.html', product_details = product_details, total = total, address_details = address_details)
+
+
+@app.route('/PlaceOrder', methods = ['GET', 'POST'])
+def order_success() :
+
+    pysql.init()
+    order_id = Orders.place_order(pysql, all_ids['customer_id'], all_ids['address_id'], all_ids['payment_method'])
+    if order_id != 0 :
+        return render_template('/Cart/order_placed.html', order_id = order_id)
+    return render_template('/Cart/cart_info.html')
+
+
+@app.route('/YourAccount', methods = ['GET', 'POST'])
+def profile_view_and_updation() :
+
+    pysql.init()
+    profile = Customer.get_customer_profile(pysql, all_ids['customer_id'])
+
+    first_name = profile[0][0]
+    last_name = profile[0][1]
+    email = profile[0][2]
+    phone1 = profile[0][3]
+    phone2 = profile[0][4]
+
+    if request.method == 'POST' :
+        if 'update' in request.form :
+            profile_details = request.form
+            first_name = profile_details['first_name']
+            last_name = profile_details['last_name']
+            email = profile_details['email']
+            phone1 = profile_details['phone1']
+            phone2 = profile_details['phone2']
+
+        ans = Customer.update_customer_profile(pysql, all_ids['customer_id'], first_name, last_name, email, phone1, phone2)
+        if ans :
+            print("Profile Updated Successfully!")
+        else :
+            print("Profile Updation Failed")
+
+    return render_template('/CustomerSignIn/your_account.html', customer_id = all_ids['customer_id'], first_name = first_name, last_name = last_name, email = email, phone1 = phone1, phone2 = phone2)
+
+
+@app.route('/YourOrders', methods = ['GET', 'POST'])
+def show_orders() :
+    pysql.init()
+    order_details = Orders.get_order_details(pysql, all_ids['customer_id'])
+    return render_template('/CustomerSignIn/your_orders.html', order_details = order_details)
+
+
+@app.route('/AddAddress', methods = ['GET', 'POST'])
+def add_address() :
+
+    pysql.init()
+    if request.method == 'POST' :
+        if 'add_address' in request.form :
+
+            addr_details = request.form
+            street = addr_details['street']
+            landmark = addr_details['landmark']
+            city = addr_details['city']
+            state = addr_details['state']
+            pincode = addr_details['pincode']
+            address_type = addr_details['address_type']
+            
+            # Check here the email-id and password entered with the sql database
+            ans = Address.add_customer_address(pysql, all_ids['customer_id'], pincode, street, landmark, city, state, address_type)
+            print(ans)
+
+            if ans :
+                print("Address Added")
+                return redirect('/ProductCategory')
+            else :
+                print("Adding Address Failed")
+
+    return render_template('/CustomerSignIn/add_address.html')
 
 
 #########   ADMIN RELATED FUNCTIONS ########
@@ -296,18 +366,7 @@ def admin_signin_page():
 
 @app.route('/AdminActions', methods = ['GET', 'POST'])
 def select_admin_action() :
-    '''if request.method == 'POST' :
-        # List of options
-        options = ['insert_product',
-                   'add_delivery_executive',
-                   'show_all_products',
-                   'show_all_delivery_executives']
 
-        # Check if any option is selected
-        for option in options:
-            if option in request.form:
-                return redirect('/' + option)
-                '''
     return render_template('/Admin/admin_actions.html')
 
 
@@ -400,6 +459,8 @@ def delivery_details_page() :
     pysql.init()
     undelivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 0)
     delivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 1)
+    print(undelivered_details)
+    print(delivered_details)
 
     if request.method == 'POST' :
         order_ids = []
@@ -410,8 +471,11 @@ def delivery_details_page() :
         for i in order_ids:
             if selected_order_id == i:
                 DeliveryExecutive.change_delivery_status(pysql, selected_order_id)
+                undelivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 0)
+                delivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 1)
+                break
 
-    return render_template('/DeliveryExecutiveSignIn/delivery_details.html', undelivered_details = undelivered_details, delivered_details = delivered_details)
+    return render_template('/DeliveryExecutiveSignIn/delivery_details.html', delivery_id = all_ids['deliveryexecutive_id'], undelivered_details = undelivered_details, delivered_details = delivered_details)
 
 if __name__ == "__main__" :
     app.run(debug = True)
