@@ -49,3 +49,15 @@ class Address :
             return 1 
         except :
             return 0
+
+    @staticmethod
+    def view_all_address_of_customer(pysql, customer_id) :
+            
+        sql_stmt =  'SELECT Address_ID, Pincode, Street, Landmark, City, State, Type ' \
+                    'FROM Address ' \
+                    'WHERE Customer_ID = %s' \
+
+        pysql.run(sql_stmt, (customer_id, ))
+        addresses = pysql.result
+
+        return addresses
