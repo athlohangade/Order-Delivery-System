@@ -102,16 +102,17 @@
                 <tbody>
                      {% for row in undelivered_details %}
                      <tr>
+                         {% set status = row[0] %}
                          {% for detail in row %}
                          <td>
                             {{ detail }}
                         </td>
+                        {% endfor %}
                         <td>
-                            <button type="submit" class="btn btn-success btn-xs" name="delivered" value="{{ detail[0] }}">
+                            <button type="submit" class="btn btn-success btn-xs" name="delivered" value="{{ status }}">
                                 <span class="glyphicon glyphicon-ok"></span>
                             </button>
                         </td>
-                        {% endfor %}
                      </tr>
                      {% endfor %}
 
@@ -121,9 +122,9 @@
                          <td>
                             {{ detail }}
                         </td>
+                        {% endfor %}
                         <td>
                         </td>
-                        {% endfor %}
                      </tr>
                      {% endfor %}
                  </tbody>

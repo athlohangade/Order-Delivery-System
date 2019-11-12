@@ -135,14 +135,14 @@
          <tbody>
              {% for row in address_details %}
              <tr>
-                 {% for detail in row %}
                  <td>
                      <div class="radio">
-                         <label><input type="radio" name="address_radio">{{ detail[0] }}</label>
+                         <label><input type="radio" name="address_radio" value = "{{ row[0] }}">{{ row[0] }}</label>
                      </div>
                  </td>
+                 {% for detail in row[1:] %}
                  <td>
-                     {{ detail[1:] }}
+                     {{ detail }}
                  </td>
                 {% endfor %}
              </tr>
@@ -155,13 +155,13 @@
     <h4 style="font-size:20px;color:#5C5C5C;">Payment Method:</h4>
 </div>
 <div class="custom-control custom-radio section-wrap">
-  <input type="radio" class="custom-control-input" id="debit_card" name="payment_method">
+  <input type="radio" class="custom-control-input" value="Debit Card" name="payment_method">
   <label class="custom-control-label" for="payment_method">Debit Card</label>
-  <input type="radio" class="custom-control-input" id="credit_card" name="payment_method" checked>
+  <input type="radio" class="custom-control-input" value="Credit Card" name="payment_method" checked>
   <label class="custom-control-label" for="payment_method">Credit Card</label>
-  <input type="radio" class="custom-control-input" id="net_banking" name="payment_method">
+  <input type="radio" class="custom-control-input" value="Net Banking" name="payment_method">
   <label class="custom-control-label" for="payment_method">Net Banking</label>
-  <input type="radio" class="custom-control-input" id="cash_on_delivery" name="payment_method">
+  <input type="radio" class="custom-control-input" value="Cash On Delivery" name="payment_method">
   <label class="custom-control-label" for="payment_method">Cash On Delivery</label>
 </div>
 </div><br>
