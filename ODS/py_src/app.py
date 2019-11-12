@@ -246,6 +246,11 @@ def view_cart() :
 
     # If place_order button is pressed
     elif 'place_order' in request.form :
+        selected_address_id = request.form['address_radio']
+        print(selected_address_id)
+
+        selected_payment_method = request.form['payment_method']
+        print(selected_payment_method)
         redirect('/PlaceOrder')
 
     # Show current products in cart
