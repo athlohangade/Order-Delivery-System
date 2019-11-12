@@ -1,8 +1,19 @@
--- Change the ER --> Change the Availabity attribute of Product table to
-                     Quantity
-                     Also make "name" attribute before the "category" attribute
-                     in product table
--- Ordering by both price and rating to be discussed with Mayank.
+-- Change the ER and Schema --> Change the Availabity attribute of Product table 
+    to Quantity
+    Also make "name" attribute before the "category" attribute
+    in product table
+
 -- Prepare a table "orderdetails" having 'orderid' and 'productid' together as 
-    primary key
--- Add "clear cart" button in cart_info.html
+    primary key in Schema and ER diagram
+
+-- Sorting by price and Sorting by Rating buttons to be added
+
+-- Ordering by both price and rating to be discussed with Mayank.
+
+-- 'Back' button to be added on every page
+
+-- Have a default radio button selected in Address table. (Like in case of
+    payment_method). (It has 'for' loop)
+
+-- Add a table on 'Your Accounts' Page to allow the customer to view the address
+    he/she has entered till date
