@@ -8,10 +8,13 @@ DONE
 DONE
 
 -- Sorting by price and Sorting by Rating buttons to be added
+SKIP
 
 -- Ordering by both price and rating to be discussed with Mayank.
+SKIP
 
 -- 'LOGOUT' button to be added on first page after any signin
+DONE
 
 -- 'Back' button to be added on every page
 DONE
