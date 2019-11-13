@@ -1,4 +1,4 @@
--- Drop database CMS if exists
+-- Drop database ODS if exists
 DROP DATABASE IF EXISTS ODS;
 CREATE DATABASE ODS;
 USE ODS;
