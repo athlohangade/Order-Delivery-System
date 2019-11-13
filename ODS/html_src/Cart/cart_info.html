@@ -75,6 +75,10 @@
     .section-wrap{
     text-align:center;
     }
+    .button-container form,
+    .button-container form div {
+        display: inline;
+}
 </style>
 </head>
 <body>
@@ -137,7 +141,7 @@
              <tr>
                  <td>
                      <div class="radio">
-                         <label><input type="radio" name="address_radio" value = "{{ row[0] }}">{{ row[0] }}</label>
+                         <label><input type="radio" name="address_radio" value = "{{ row[0] }}" required>{{ row[0] }}</label>
                      </div>
                  </td>
                  {% for detail in row[1:] %}
@@ -166,13 +170,12 @@
 </div>
 </div><br>
     <div class="row text-center">
-        <button class="btn btn-primary" type="submit" name="place_order" value="Place Order">Place Order!</button>
-            <br><br>
-        <button class="btn btn-primary" type="submit" name="clear_cart"
-            value="Clear Cart">Clear Cart</button>
-            <br><br>
+        <button class="button-container btn btn-primary" type="submit" name="place_order" value="Place Order">Place Order!</button>
+        &emsp;&emsp;
+        <button class="button-container btn btn-primary" type="submit" name="clear_cart" value="Clear Cart">Clear Cart</button>
+        <br><br>
         <p class="text-center"><a href="ProductCategory">Back to Product Category</a></p>
     </div>
-    </form>
+</form>
 </body>
 </html>
