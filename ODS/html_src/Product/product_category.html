@@ -3,71 +3,75 @@
 <head>
     <meta charset="utf-8">
     <title>Product Category</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-        .wrapper {
-	         margin-top: 80px;
-	          margin-bottom: 20px;
-          }
+    .wrapper {
+        margin-top: 80px;
+        margin-bottom: 20px;
+    }
 
-.form-signin {
-  max-width: 420px;
-  padding: 0px 38px 30px;
-  margin: 0 auto;
-  background-color: #eee;
-  border: 3px solid rgba(0,0,0,0.1);
-  }
+    .form-signin {
+        max-width: 420px;
+        padding: 0px 38px 30px;
+        margin: 0 auto;
+        background-color: #eee;
+        border: 3px solid rgba(0,0,0,0.1);
+    }
 
-.form-signin-heading {
-  text-align:center;
-  margin-bottom: 20px;
-}
+    .form-signin-heading {
+        text-align:center;
+        margin-bottom: 20px;
+    }
 
-.form-control {
-  position: relative;
-  font-size: 16px;
-  height: auto;
-  padding: 10px;
-}
+    .form-control {
+        position: relative;
+        font-size: 16px;
+        height: auto;
+        padding: 10px;
+    }
 
-hr.style1{
-	border-top: 1px solid #ffffff;
-}
-.colorgraph {
-  height: 5px;
-  border-top: 0;
-  background: #c4e17f;
-  border-radius: 5px;
-  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-}
+    hr.style1{
+        border-top: 1px solid #ffffff;
+    }
+    .colorgraph {
+        height: 5px;
+        border-top: 0;
+        background: #c4e17f;
+        border-radius: 5px;
+        background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+        background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+        background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+        background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+    }
     </style>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class = "container">
-    <div class="wrapper">
-		<form action="" method="POST" name="" class="form-signin">
-            <h2 class="container">User Details</h2>
-            <hr class="colorgraph">
+        <div class="wrapper">
+            <form action="" method="POST" class="form-signin">
+                <h2 class="container">User Details</h2>
+                <hr class="colorgraph">
                 <a href="YourAccount" class="btn btn-primary btn-lg btn-block" role="button" name="your_account" value="Your Account">Your Account</a>
                 <a href="YourOrders" class="btn btn-primary btn-lg btn-block" role="button" name="your_orders" value="Your Orders">Your Orders</a>
                 <a href="AddAddress" class="btn btn-primary btn-lg btn-block" role="button" name="add_address" value="Add Address">Add Address</a>
                 <br>
-            <h2 class="container">Product Category</h2>
-            <hr class="colorgraph">
-    		    <h3 class="form-signin-heading">I am interested in buying </h3>
+                <h2 class="container">Product Category</h2>
+                <hr class="colorgraph">
+                <h3 class="form-signin-heading">I am interested in buying </h3>
                 <a href="ProductMobile" class="btn btn-primary btn-lg btn-block" role="button" name="mobile" value="Mobile">Mobile</a>
                 <a href="ProductLaptop" class="btn btn-primary btn-lg btn-block" role="button" name="laptop" value="Laptop">Laptop</a>
                 <a href="ProductClothing" class="btn btn-primary btn-lg btn-block" role="button" name="clothing" value="Clothing">Clothing</a>
                 <a href="ProductSport" class="btn btn-primary btn-lg btn-block" role="button" name="sport" value="Sport">Sport</a>
                 <a href="ProductBooks" class="btn btn-primary btn-lg btn-block" role="button" name="books" value="Books">Books</a>
-		</form>
-	</div>
-</div>
+                <br>
+                <div class="row text-center">
+                    <p class="text-center" style="font-size: 16px"><a href="/">Log Out</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

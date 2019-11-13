@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>Customer: Add Address</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style type="text/css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+	<title>Customer: Add Address</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style type="text/css">
 	body {
 		color: #fff;
 		background: #19aa8d;
@@ -19,30 +19,30 @@
 	.form-control, .form-control:focus, .input-group-addon {
 		border-color: #e1e1e1;
 	}
-    .form-control, .btn {
-        border-radius: 3px;
-    }
+	.form-control, .btn {
+		border-radius: 3px;
+	}
 	.signup-form {
 		width: 390px;
 		margin: 0 auto;
 		padding: 30px 0;
 	}
-    .signup-form form {
+	.signup-form form {
 		color: #999;
 		border-radius: 3px;
-    	margin-bottom: 15px;
-        background: #fff;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-    }
+		margin-bottom: 15px;
+		background: #fff;
+		box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		padding: 30px;
+	}
 	.signup-form h2 {
 		color: #333;
 		font-weight: bold;
-        margin-top: 0;
-    }
-    .signup-form hr {
-        margin: 0 -30px 20px;
-    }
+		margin-top: 0;
+	}
+	.signup-form hr {
+		margin: 0 -30px 20px;
+	}
 	.signup-form .form-group {
 		margin-bottom: 20px;
 	}
@@ -61,16 +61,16 @@
 	.signup-form input[type="checkbox"] {
 		margin-top: 2px;
 	}
-    .signup-form .btn{
-        font-size: 16px;
-        font-weight: bold;
+	.signup-form .btn{
+		font-size: 16px;
+		font-weight: bold;
 		background: #19aa8d;
 		border: none;
 		min-width: 140px;
-    }
+	}
 	.signup-form .btn:hover, .signup-form .btn:focus {
 		background: #179b81;
-        outline: none;
+		outline: none;
 	}
 	.signup-form a {
 		color: #fff;
@@ -102,47 +102,47 @@
 </style>
 </head>
 <body>
-<div class="signup-form">
-    <form action="" method="POST">
-		<b><p>Please fill in this to add an address!</b></p>
-		<hr>
-        <div class="form-group">
-			<div class="input-group">
-				<input id="street" type="text" class="form-control" name="street" maxlength="20" placeholder="Street" required="required">
+	<div class="signup-form">
+		<form action="" method="POST">
+			<b><p>Please fill in this to add an address!</b></p>
+			<hr>
+			<div class="form-group">
+				<div class="input-group">
+					<input id="street" type="text" class="form-control" name="street" maxlength="20" placeholder="Street" required="required">
+				</div>
 			</div>
-        </div>
-        <div class="form-group">
-			<div class="input-group">
-				<input id="landmark" type="text" class="form-control" name="landmark" maxlength="20" placeholder="Landmark" required="required">
+			<div class="form-group">
+				<div class="input-group">
+					<input id="landmark" type="text" class="form-control" name="landmark" maxlength="20" placeholder="Landmark" required="required">
+				</div>
 			</div>
-        </div>
-        <div class="form-group">
-			<div class="input-group">
-				<input id="city" type="text" class="form-control" name="city" maxlength="20" placeholder="City" required="required">
+			<div class="form-group">
+				<div class="input-group">
+					<input id="city" type="text" class="form-control" name="city" maxlength="20" placeholder="City" required="required">
+				</div>
 			</div>
-        </div>
-        <div class="form-group">
-			<div class="input-group">
-				<input id="state" type="text" class="form-control" name="state" maxlength="20" placeholder="State" required="required">
+			<div class="form-group">
+				<div class="input-group">
+					<input id="state" type="text" class="form-control" name="state" maxlength="20" placeholder="State" required="required">
+				</div>
 			</div>
-        </div>
-        <div class="form-group">
-			<div class="input-group">
-				<input id="pincode" type="text" class="form-control" name="pincode" maxlength="6" placeholder="Pincode" required="required">
+			<div class="form-group">
+				<div class="input-group">
+					<input id="pincode" type="text" class="form-control" name="pincode" maxlength="6" placeholder="Pincode" required="required">
+				</div>
 			</div>
-        </div>
-		<div class="form-group">
-			<label for="type" class="control-label">Type</label>
-			<select class="form-control" id="address_type" name="address_type">
-				<option value="Home" selected>Home</option>
-				<option value="Work">Work</option>
-			</select>
-		</div>
-        <div class="form-group">
-            <button name="add_address" type="submit" class="btn btn-primary btn-lg">Add Address</button>
-        </div>
-		<div class="text-center"><a href="ProductCategory">Back to Home Page</a></div>
-    </form>
-</div>
+			<div class="form-group">
+				<label for="type" class="control-label">Type</label>
+				<select class="form-control" id="address_type" name="address_type">
+					<option value="Home" selected>Home</option>
+					<option value="Work">Work</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<button name="add_address" type="submit" class="btn btn-primary btn-lg">Add Address</button>
+			</div>
+			<div class="text-center"><a href="ProductCategory">Back to Home Page</a></div>
+		</form>
+	</div>
 </body>
 </html>
