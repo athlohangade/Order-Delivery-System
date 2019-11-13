@@ -11,10 +11,11 @@
 <body>
     <div class="well">
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#" data-toggle="tab">Profile</a></li>
+          <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+          <li><a href="#youraddresses" data-toggle="tab">Your Addresses</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
-          <div class="tab-pane active in" id="home">
+          <div class="tab-pane active in" id="profile">
             <form action="" method="POST">
                 <label>Customer ID</label>
                 <input name="customer_id" type="text" value="{{ customer_id }}" class="input-xlarge" required="required" disabled>
@@ -28,11 +29,41 @@
                 <input name="phone1" type="text" value="{{ phone1 }}" class="input-xlarge" required="required">
                 <label>Alternate Phone Number</label>
                 <input name="phone2" type="text" value="{{ phone2 }}" class="input-xlarge" required="required">
-              	<div>
+                <br>
+                <div style="display: inline" >
             	    <button type="submit" name="update" class="btn btn-primary">Update</button>
+                    &emsp;&emsp;
+                    <p style="display: inline" class="text"><a href="ProductCategory">Back</a></p>
             	</div>
-            </form>
           </div>
+          <div class="tab-pane fade" id="youraddresses">
+              <div class="table-wrapper">
+                  <table class="table table-striped">
+                       <thead>
+                               <th>ID</th>
+                               <th>Pincode</th>
+                               <th>Street</th>
+                               <th>Landmark</th>
+                               <th>City</th>
+                               <th>State</th>
+                               <th>Type</th>
+                       </thead>
+                       <tbody>
+                           {% for row in address_details %}
+                           <tr>
+                               {% for detail in row %}
+                               <td>
+                                   {{ detail }}
+                               </td>
+                              {% endfor %}
+                          </tr>
+                          {% endfor %}
+                          </tbody>
+                      </table>
+                  </div>
+                  <p class="text"><a href="ProductCategory">Back</a></p>
+          </div>
+        </form>
       </div>
     </div>
 </body>
