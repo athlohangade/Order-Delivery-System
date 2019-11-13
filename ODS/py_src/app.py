@@ -12,7 +12,7 @@ def index():
 
 all_ids = { 'customer_id'   : None,
             'address_id'    : None,
-            'payment_method': None } 
+            'payment_method': None }
 
 
 
@@ -247,7 +247,7 @@ def view_cart() :
             all_ids['address_id'] = selected_address_id
 
             selected_payment_method = request.form['payment_method']
-            all_ids['payment_method'] = selected_payment_method 
+            all_ids['payment_method'] = selected_payment_method
             return redirect('/PlaceOrder')
 
     # Show current products in cart
@@ -276,6 +276,7 @@ def order_success() :
     order_id = Orders.place_order(pysql, all_ids['customer_id'], all_ids['address_id'], all_ids['payment_method'])
     if order_id != 0 :
         return render_template('/Cart/order_placed.html', order_id = order_id)
+    print("Order ID = 0")
     return render_template('/Cart/cart_info.html')
 
 
@@ -290,6 +291,7 @@ def profile_view_and_updation() :
     email = profile[0][2]
     phone1 = profile[0][3]
     phone2 = profile[0][4]
+    address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
 
     if request.method == 'POST' :
         if 'update' in request.form :
@@ -306,7 +308,7 @@ def profile_view_and_updation() :
         else :
             print("Profile Updation Failed")
 
-    return render_template('/CustomerSignIn/your_account.html', customer_id = all_ids['customer_id'], first_name = first_name, last_name = last_name, email = email, phone1 = phone1, phone2 = phone2)
+    return render_template('/CustomerSignIn/your_account.html', customer_id = all_ids['customer_id'], first_name = first_name, last_name = last_name, email = email, phone1 = phone1, phone2 = phone2, address_details = address_details)
 
 
 @app.route('/YourOrders', methods = ['GET', 'POST'])
@@ -330,7 +332,7 @@ def add_address() :
             state = addr_details['state']
             pincode = addr_details['pincode']
             address_type = addr_details['address_type']
-            
+
             # Check here the email-id and password entered with the sql database
             ans = Address.add_customer_address(pysql, all_ids['customer_id'], pincode, street, landmark, city, state, address_type)
             print(ans)
