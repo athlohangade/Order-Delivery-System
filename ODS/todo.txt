@@ -11,9 +11,18 @@
 -- Ordering by both price and rating to be discussed with Mayank.
 
 -- 'Back' button to be added on every page
+DONE
 
 -- Have a default radio button selected in Address table. (Like in case of
     payment_method). (It has 'for' loop)
+DONE
+Instead added required for the radio button. So user can't proceed without selecting address.
+Adding default is hard because it is jinja template and dynamic.
 
 -- Add a table on 'Your Accounts' Page to allow the customer to view the address
     he/she has entered till date
+DONE with appropriate changes in app.py
+
+-- After clicking on Place Order, it should go to order_placed.html page. But it is returning 
+	order_id = 0 at times, causing CartInfo to reload again
+BUG
