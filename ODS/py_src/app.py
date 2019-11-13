@@ -273,10 +273,16 @@ def view_cart() :
 def order_success() :
 
     pysql.init()
+
+    # If cart is empty, order not to be placed
+    if Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) == 0 :
+        address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
+        return render_template('/Cart/cart_info.html', address_details = address_details, total = 0)
+
     order_id = Orders.place_order(pysql, all_ids['customer_id'], all_ids['address_id'], all_ids['payment_method'])
     if order_id != 0 :
         return render_template('/Cart/order_placed.html', order_id = order_id)
-    print("Order ID = 0")
+
     return render_template('/Cart/cart_info.html')
 
 
