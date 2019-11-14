@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS Product;
 DROP TABLE IF EXISTS Cart;
 DROP TABLE IF EXISTS Delivery;
 DROP TABLE IF EXISTS DeliveryExecutive;
+DROP TABLE IF EXISTS OrderDetails;
 
 -- Create the schemas
 
