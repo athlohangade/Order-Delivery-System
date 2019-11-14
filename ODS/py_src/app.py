@@ -6,15 +6,21 @@ from OdsLib import *
 app = Flask(__name__ , template_folder = '../html_src/', static_folder = '../html_src/')
 pysql = PySql(app, 'db.yaml')
 
+all_ids = { 'customer_id'           : None,
+            'address_id'            : None,
+            'deliveryexecutive_id'  : None,
+            'payment_method'        : None }
+
+
 @app.route('/', methods = ['GET', 'POST'])
 def index():
+    global all_ids
+    all_ids = { 'customer_id'           : None,
+                'address_id'            : None,
+                'deliveryexecutive_id'  : None,
+                'payment_method'        : None }
+
     return render_template('index.html')
-
-all_ids = { 'customer_id'   : None,
-            'address_id'    : None,
-            'payment_method': None }
-
-
 
 
 #########   CUSTOMER RELATED FUNCTIONS ########
@@ -23,7 +29,11 @@ all_ids = { 'customer_id'   : None,
 def customer_signin_page():
 
     pysql.init()
+    global all_ids
+
     if request.method == 'POST' :
+
+        # Check if the button is selected
         if 'customer_login' in request.form :
             email = request.form['customer_email']
             password = request.form['customer_password']
@@ -47,6 +57,8 @@ def customer_signup_page() :
     pysql.init()
     if request.method == 'POST' :
         if 'customer_signup' in request.form:
+
+            # Get the details
             userDetails = request.form
             firstname = userDetails['customer_firstname']
             lastname = userDetails['customer_lastname']
@@ -74,6 +86,8 @@ def user_page() :
 @app.route('/ProductMobile', methods = ['GET', 'POST'])
 def product_mobile() :
     pysql.init()
+
+    # Get all the mobiles 
     product_details = Product.get_product_by_category(pysql, 'Mobile')
     global all_ids
 
@@ -85,6 +99,13 @@ def product_mobile() :
             for i in range(len(quantities)) :
                 quantities[i] = int(quantities[i])
 
+            # check if the issued quantity is present in product stock
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    if not(Product.check_if_in_stock(pysql, all_ids['customer_id'], product_details[i][0], quantities[i])) :
+                        print("Not enough in stock")
+                        return render_template('/Product/product_mobile.html', product_details = product_details)
+
             # check if adding the quantities to the cart doesn't exceed cart limit
             if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
                 print("Max cart limit reached")
@@ -94,8 +115,7 @@ def product_mobile() :
             for i in range(0, len(product_details)) :
                 if quantities[i] > 0 :
                     for j in range(0, quantities[i]) :
-                        Cart.add_product_to_cart(pysql, all_ids['customer_id'],
-                                product_details[i][0])
+                        Cart.add_product_to_cart(pysql, all_ids['customer_id'], product_details[i][0])
 
             return redirect('/CartInfo')
 
@@ -115,6 +135,13 @@ def product_laptop() :
             quantities = request.form.getlist("quantity[]")
             for i in range(len(quantities)) :
                 quantities[i] = int(quantities[i])
+
+            # check if the issued quantity is present in product stock
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    if not(Product.check_if_in_stock(pysql, all_ids['customer_id'], product_details[i][0], quantities[i])) :
+                        print("Not enough in stock")
+                        return render_template('/Product/product_mobile.html', product_details = product_details)
 
             # check if adding the quantities to the cart doesn't exceed cart limit
             if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
@@ -148,6 +175,13 @@ def product_clothing() :
             for i in range(len(quantities)) :
                 quantities[i] = int(quantities[i])
 
+            # check if the issued quantity is present in product stock
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    if not(Product.check_if_in_stock(pysql, all_ids['customer_id'], product_details[i][0], quantities[i])) :
+                        print("Not enough in stock")
+                        return render_template('/Product/product_mobile.html', product_details = product_details)
+
             # check if adding the quantities to the cart doesn't exceed cart limit
             if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
                 print("Max cart limit reached")
@@ -178,6 +212,13 @@ def product_sport() :
             quantities = request.form.getlist("quantity[]")
             for i in range(len(quantities)) :
                 quantities[i] = int(quantities[i])
+
+            # check if the issued quantity is present in product stock
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    if not(Product.check_if_in_stock(pysql, all_ids['customer_id'], product_details[i][0], quantities[i])) :
+                        print("Not enough in stock")
+                        return render_template('/Product/product_mobile.html', product_details = product_details)
 
             # check if adding the quantities to the cart doesn't exceed cart limit
             if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
@@ -210,6 +251,13 @@ def product_books() :
             for i in range(len(quantities)) :
                 quantities[i] = int(quantities[i])
 
+            # check if the issued quantity is present in product stock
+            for i in range(0, len(product_details)) :
+                if quantities[i] > 0 :
+                    if not(Product.check_if_in_stock(pysql, all_ids['customer_id'], product_details[i][0], quantities[i])) :
+                        print("Not enough in stock")
+                        return render_template('/Product/product_mobile.html', product_details = product_details)
+
             # check if adding the quantities to the cart doesn't exceed cart limit
             if (Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) + sum(quantities)) > 5 :
                 print("Max cart limit reached")
@@ -235,9 +283,9 @@ def view_cart() :
     product_details = []
     total = 0
 
-    # Shopping Cart
 
     if request.method == 'POST' :
+        # Clear Shopping Cart
         if 'clear_cart' in request.form :
             Cart.clear_cart(pysql, all_ids['customer_id'])
 
@@ -252,11 +300,14 @@ def view_cart() :
 
     # Show current products in cart
     else :
+        # Get ids of the product currently present in cart
         prodids_incart = Cart.get_prod_in_cart(pysql, all_ids['customer_id'])
         prodids_incart = prodids_incart[0]
 
+        # Get the total price of products in the cart
         total = Cart.get_total(pysql, all_ids['customer_id'])
 
+        # for each product id, get the product details
         for i in prodids_incart :
             if i is not None :
                 ans = Product.get_product_details(pysql, i)
@@ -273,12 +324,14 @@ def view_cart() :
 def order_success() :
 
     pysql.init()
+    global all_ids
 
     # If cart is empty, order not to be placed
     if Cart.get_no_of_products_in_cart(pysql, all_ids['customer_id']) == 0 :
         address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
         return render_template('/Cart/cart_info.html', address_details = address_details, total = 0)
 
+    # Place the order
     order_id = Orders.place_order(pysql, all_ids['customer_id'], all_ids['address_id'], all_ids['payment_method'])
     if order_id != 0 :
         return render_template('/Cart/order_placed.html', order_id = order_id)
@@ -290,6 +343,9 @@ def order_success() :
 def profile_view_and_updation() :
 
     pysql.init()
+    global all_ids
+
+    # get the user account details (name, email, etc)
     profile = Customer.get_customer_profile(pysql, all_ids['customer_id'])
 
     first_name = profile[0][0]
@@ -297,6 +353,8 @@ def profile_view_and_updation() :
     email = profile[0][2]
     phone1 = profile[0][3]
     phone2 = profile[0][4]
+
+    # get all the address that are linked with customer account
     address_details = Address.view_all_address_of_customer(pysql, all_ids['customer_id'])
 
     if request.method == 'POST' :
@@ -308,6 +366,7 @@ def profile_view_and_updation() :
             phone1 = profile_details['phone1']
             phone2 = profile_details['phone2']
 
+        # Update the profile 
         ans = Customer.update_customer_profile(pysql, all_ids['customer_id'], first_name, last_name, email, phone1, phone2)
         if ans :
             print("Profile Updated Successfully!")
@@ -320,6 +379,9 @@ def profile_view_and_updation() :
 @app.route('/YourOrders', methods = ['GET', 'POST'])
 def show_orders() :
     pysql.init()
+    global all_ids
+
+    # Display all the order history of the customer 
     order_details = Orders.get_order_details(pysql, all_ids['customer_id'])
     return render_template('/CustomerSignIn/your_orders.html', order_details = order_details)
 
@@ -328,6 +390,8 @@ def show_orders() :
 def add_address() :
 
     pysql.init()
+    global all_ids
+
     if request.method == 'POST' :
         if 'add_address' in request.form :
 
@@ -339,7 +403,7 @@ def add_address() :
             pincode = addr_details['pincode']
             address_type = addr_details['address_type']
 
-            # Check here the email-id and password entered with the sql database
+            # Add the address to the customer account
             ans = Address.add_customer_address(pysql, all_ids['customer_id'], pincode, street, landmark, city, state, address_type)
             print(ans)
 
@@ -363,7 +427,7 @@ def admin_signin_page():
             password = request.form['admin_password']
 
             # Check here the email-id and password entered
-            if email == 'atharva' and password == 'atharva' :
+            if email == 'root' and password == 'admin' :
                 print("Logged In")
                 return redirect('/AdminActions')
             else :
@@ -429,6 +493,8 @@ def add_deliveryexecutive() :
 @app.route('/ShowAllProducts', methods = ['GET', 'POST'])
 def show_all_products() :
     pysql.init()
+
+    # Display all the products in the database
     product_details = Product.get_all_products(pysql)
     return render_template('/Admin/show_all_products.html', product_details = product_details)
 
@@ -436,6 +502,8 @@ def show_all_products() :
 @app.route('/ShowAllDeliveryExecutives', methods = ['GET', 'POST'])
 def show_all_deliveryexecutives() :
     pysql.init()
+
+    # Display all the delivery executives currently in work
     delivery_executive_details = DeliveryExecutive.get_all_deliveryexecutives(pysql)
     return render_template('/Admin/show_all_delivery_executives.html', delivery_executive_details = delivery_executive_details)
 
@@ -445,6 +513,7 @@ def show_all_deliveryexecutives() :
 @app.route('/DeliveryExecutiveSignIn', methods = ['GET', 'POST'])
 def deliveryexecutive_signin_page() :
     pysql.init()
+    global all_ids
     if request.method == 'POST' :
         if 'deliveryexecutive_login' in request.form:
             email = request.form['deliveryexecutive_email']
@@ -465,16 +534,21 @@ def deliveryexecutive_signin_page() :
 @app.route('/DeliveryDetails', methods = ['GET', 'POST'])
 def delivery_details_page() :
     pysql.init()
+
+    # find all undelivered and delivered orders
     undelivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 0)
     delivered_details = DeliveryExecutive.get_orders_details(pysql, all_ids['deliveryexecutive_id'], 1)
-    print(undelivered_details)
-    print(delivered_details)
 
     if request.method == 'POST' :
+
+        # Get the ids of orders that are undelivered
         order_ids = []
         for i in undelivered_details:
             order_ids.append(i[0])
 
+        # Get the order id that is selected and compare it with all the
+        # undelivered order ids. Change the status of the selected order id.
+        # Again find all the undelivered and delivered orders and display them
         selected_order_id = request.form["delivered"]
         for i in order_ids:
             if selected_order_id == i:
