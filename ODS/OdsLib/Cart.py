@@ -29,7 +29,7 @@ class Cart :
         if i == 6 :
             return 0
 
-        # Query to add the required in cart at position 'i'
+        # Query to add the required product in cart at position 'i'
         sql_stmt =  'UPDATE Cart ' \
                     'SET Prod_ID%s = %s ' \
                     'WHERE Customer_ID = %s'
@@ -84,7 +84,7 @@ class Cart :
 
         return 1
 
-
+    # @brief This method returns all the product ids in the cart
     @staticmethod
     def get_prod_in_cart(pysql, customer_id) :
         # Get the entries of prodID from cart for a particular customer
@@ -96,7 +96,7 @@ class Cart :
         products = pysql.result
         return products
    
-
+    # @brief This method gives the total of products present in the cart
     @staticmethod
     def get_total(pysql, customer_id) :
 

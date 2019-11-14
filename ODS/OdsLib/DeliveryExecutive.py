@@ -120,7 +120,7 @@ class DeliveryExecutive :
 
     # @brief This method changes the status of Order from "Not Delivered" to
     #        "Delivered"
-    # @param Order_id (BUT HOW TO GET THE ORDER_ID FROM THE HTML PAGE!!!!)
+    # @param Order_id 
     # @retval 1 if success, else 0
     @staticmethod
     def change_delivery_status(pysql, order_id) :

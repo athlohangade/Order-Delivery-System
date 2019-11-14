@@ -34,9 +34,9 @@ class Product :
         for i in range(0, len(row)) :
             if row[i][1] == name and row[i][2] == category and row[i][5] ==  seller :
                 sql_stmt =  'UPDATE Product ' \
-                            'SET Quantity = Quantity + %s ' \
+                            'SET Quantity = Quantity + %s, Price = %s ' \
                             'WHERE Product_ID = %s'
-                pysql.run(sql_stmt, (quantity, row[i][0]))
+                pysql.run(sql_stmt, (quantity, price, row[i][0]))
                 pysql.commit()
                 return 1
 
@@ -91,6 +91,33 @@ class Product :
 
         return products
 
+
+    @staticmethod
+    def check_if_in_stock(pysql, customer_id, product_id, quantity) :
+        sql_stmt =  'SELECT Quantity ' \
+                    'FROM Product ' \
+                    'WHERE Product_ID = %s'
+
+        pysql.run(sql_stmt, (product_id, ))
+        ans = pysql.result
+
+        if (ans[0][0] - quantity) < 0 :
+            return 0
+        else :
+            ans = ans[0][0] - quantity
+            sql_stmt =  'SELECT Prod_ID1, Prod_ID2, Prod_ID3, Prod_ID4, Prod_ID5 ' \
+                        'FROM Cart ' \
+                        'WHERE Customer_ID = %s'
+
+            pysql.run(sql_stmt, (customer_id, ))
+            row = pysql.result
+            for i in range(0, 5) :
+                if row[0][i] is not None :
+                    if row[0][i] == product_id :
+                        ans = ans - 1
+                        if ans < 0 :
+                            return 0
+            return 1
 
 
     @staticmethod

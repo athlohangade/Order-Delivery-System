@@ -57,13 +57,28 @@ class Orders :
             pysql.run(sql_stmt, (customer_id, ))
             row = pysql.result
 
-
             for i in range(1, 6) :
                 if row[0][i] is not None :
                     sql_stmt =  'INSERT INTO OrderDetails ' \
                                 'VALUES (%s, %s)'
                     pysql.run(sql_stmt, (order_id, row[0][i]));
                     pysql.commit()
+
+            # Decrement the quantity of the product from the stock
+            for i in range(1, 6) :
+                if row[0][i] is not None :
+                    sql_stmt =  'UPDATE Product ' \
+                                'SET Quantity = Quantity - 1 ' \
+                                'WHERE Product_ID = %s'
+                    pysql.run(sql_stmt, (row[0][i], ))
+                    pysql.commit()
+
+            # If the quantity of the product becomes zero (out of stock), remove it
+            ''' sql_stmt =  'DELETE FROM Product ' \
+                        'WHERE Quantity = 0'
+            pysql.run(sql_stmt)
+            pysql.commit()'''
+
 
             # Empty the Cart
             Cart.clear_cart(pysql, customer_id)
@@ -76,6 +91,8 @@ class Orders :
             pysql.run(sql_stmt)
             deliveryexecutive_id = pysql.result
         
+            # Make an Entry of the order_id and corresponding delivery executive
+            # assigned in the Delivery table
             sql_stmt =  'INSERT INTO Delivery ' \
                         'VALUES (%s, %s)'
 
@@ -87,7 +104,7 @@ class Orders :
         except :
             return 0
 
-    # @brief This method gives the orders that have been placed till date
+    # @brief This method gives all the orders that have been placed by the customer 
     @staticmethod
     def get_order_details(pysql, customer_id) :
 
