@@ -32,11 +32,11 @@ INSERT INTO Product VALUES ('LAP-000002', 'HP 14 Pentium Gold', 'Laptop', '85499
 INSERT INTO Product VALUES ('LAP-000003', 'Lenovo V145-15AST', 'Laptop', '45999', '3.2', 'Lenovo', '125');
 INSERT INTO Product VALUES ('LAP-000004', 'Dell Inspiron 15 358', 'Laptop', '32999', '2.4', 'Dell', '120');
 
-INSERT INTO Product VALUES ('BOK-000000', 'Intro to Linux', 'Book', '1000', '3.8', 'Tata McGraw', '120');
-INSERT INTO Product VALUES ('BOK-000001', 'Rich Dad Poor Dad', 'Book', '150', '3.5', 'Texas', '105');
-INSERT INTO Product VALUES ('BOK-000002', 'The Alchemist', 'Book', '250', '4.4', 'NYT', '200');
-INSERT INTO Product VALUES ('BOK-000003', 'Raging Winds', 'Book', '600', '4.1', 'Khan', '170');
-INSERT INTO Product VALUES ('BOK-000004', 'Thomas Calculus', 'Book', '700', '2.5', 'Mohini Publishers', '160');
+INSERT INTO Product VALUES ('BOK-000000', 'Intro to Linux', 'Books', '1000', '3.8', 'Tata McGraw', '120');
+INSERT INTO Product VALUES ('BOK-000001', 'Rich Dad Poor Dad', 'Books', '150', '3.5', 'Texas', '105');
+INSERT INTO Product VALUES ('BOK-000002', 'The Alchemist', 'Books', '250', '4.4', 'NYT', '200');
+INSERT INTO Product VALUES ('BOK-000003', 'Raging Winds', 'Books', '600', '4.1', 'Khan', '170');
+INSERT INTO Product VALUES ('BOK-000004', 'Thomas Calculus', 'Books', '700', '2.5', 'Mohini Publishers', '160');
 
 INSERT INTO Product VALUES ('SPT-000000', 'Football', 'Sport', '800', '3.5', 'Arsenal', '150');
 INSERT INTO Product VALUES ('SPT-000001', 'Badminton Racquet', 'Sport', '4500', '3.5', 'Yonex', '510');
