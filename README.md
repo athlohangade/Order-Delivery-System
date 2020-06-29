@@ -15,7 +15,7 @@ This project is a simple demonstration of mega e-commerce websites like Flipkart
     >   source ods_env/bin/activate
 
 3.  Chnage working directory to *ODS* and install the required libraries :
-    >   python3 -m pip install -r requirements
+    >   python3 -m pip install -r requirements.txt
 
 ## Usage
 1.  Update the credentials in *py_src/db.yaml* file to connect to the mysql database. You will need to create a mysql user for this.
